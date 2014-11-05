@@ -1,5 +1,5 @@
 <?php
-	include_once "../auth.php";
+	include_once "../database.php";
 
 	if(!isset($_GET['method']) || $_GET['method'] == ""){
 		badRequest();
