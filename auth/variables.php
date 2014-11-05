@@ -1,6 +1,6 @@
 <?php
 
-	define("TITLE", "Agora@US")
+	define("TITLE", "Agora@US");
 	define("ONE_YEAR", 3600*24*365);
 
 	//DATABASE
