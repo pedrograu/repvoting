@@ -21,8 +21,8 @@
 		return $username.':'.md5($username.md5($password));
 	}
 
-	// Check if an user is already authenticated in the system
-	function isAuthenticated($token, $username) {
+	// Check if a given user is already authenticated in the system by checking a token
+	function checkUserToken($token, $username) {
 		$user = getUser($username);
 		return (isset($user) and getToken($username,$user["2"])==$token);
 	}
@@ -30,7 +30,7 @@
 	// Check if an user is already authenticated in the system looking at cookies
 	function isAuthenticated() {
 		if (isset($_COOKIE["user"]) and isset($_COOKIE["token"])) {
-			return isAuthenticated($_COOKIE["token"], $_COOKIE["user"]);
+			return checkUserToken($_COOKIE["token"], $_COOKIE["user"]);
 		} else {
 			return false;
 		}
@@ -49,6 +49,6 @@
 	// Check if the user is authenticated, using the username in the token
 	function tokenIsCorrect($token){
 		$username = explode(':', $token)[0];
-		return isAuthenticated($token, $username);
+		return checkUserToken($token, $username);
 	}
 ?>
