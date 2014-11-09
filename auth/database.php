@@ -27,7 +27,6 @@ function getUser($user) {
 	$con = connect();
 	$stmt = $con->prepare("SELECT USERNAME, PASSWORD, EMAIL FROM USERS WHERE USERNAME=:user");
 	$stmt->bindParam(':user',$user);
-	$stmt->bindParam(':pass',$pass);
 	$stmt->execute();
 	return $stmt->fetch();
 }
