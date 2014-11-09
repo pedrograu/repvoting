@@ -24,7 +24,7 @@
 	// Check if a given user is already authenticated in the system by checking a token
 	function checkUserToken($token, $username) {
 		$user = getUser($username);
-		return (isset($user) and getToken($username,$user["2"])==$token);
+		return (isset($user) and getToken($username,$user["PASSWORD"])==$token);
 	}
 
 	// Check if an user is already authenticated in the system looking at cookies
