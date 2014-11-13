@@ -7,7 +7,7 @@ include_once 'variables.php';
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title><?php echo TITLE?></title>
 </head>
-<<body>>
+<body>
 
 </body>
 </html>
