@@ -6,7 +6,7 @@
 	function setAuthCookie($username, $password) {
 		if (validUser($username,$password)) {
 			setcookie("token",getToken($username, $password), time()+ONE_YEAR);
-			setcookie("user",$username, time()+ONE_YEAR);	
+			setcookie("user",$username, time()+ONE_YEAR);
 		}
 	}
 
@@ -40,7 +40,7 @@
 	function validUser($username, $password){
 		$result = False;
 		$user = getUser($username);
-		if(isset($user) && $user["password"]==md5($password)){
+		if(isset($user) && $user["PASSWORD"]==md5($password)){
 			$result = True;
 		}
 
