@@ -26,7 +26,7 @@ try{
 	$loginRes = validUser($user, $pass);
 	if($loginRes) {
 		setAuthCookie($user, $pass);
-		header('Location; ./?cont=home')
+		header('Location; ./?cont=home');
 	}else{
 		error("wrongPass");
 	}
