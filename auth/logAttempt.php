@@ -1,7 +1,7 @@
 <?php
 /*Archivo dedicado a intentar realizar login. Si hay error, se redirige al usuario*/
 
-session_start()
+session_start();
 
 include_once "auth.php";
 
