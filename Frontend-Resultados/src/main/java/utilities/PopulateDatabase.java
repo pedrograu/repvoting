@@ -43,7 +43,7 @@ import domain.DomainEntity;
 @SuppressWarnings("deprecation")
 public class PopulateDatabase {
 	
-	final static String PersistenceUnit = "Sample";
+	final static String PersistenceUnit = "EGC-Frontend";
 	
 	public static void main(String[] args) throws Throwable {		
 		ApplicationContext applicationContext;
