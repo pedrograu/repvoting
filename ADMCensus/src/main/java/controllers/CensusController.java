@@ -56,17 +56,18 @@ public class CensusController extends AbstractController {
 	//Recibe parametros de votacion y crea un censo por votacion
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET, produces="application/json")
-	public @ResponseBody String create(@RequestParam int idVotacion,@RequestParam String fecha_inicio,@RequestParam String fecha_fin, String tituloVotacion,
+	public  ModelAndView create(@RequestParam int idVotacion,@RequestParam String fecha_inicio,@RequestParam String fecha_fin, String tituloVotacion,
 			@CookieValue("user") String username) throws ParseException{ 
+		ModelAndView result = null;
 		
 		Census  c = censusService.create(idVotacion, username, fecha_inicio, fecha_fin, tituloVotacion);
 		try{
-			censusService.save(c);
-			return new String("[{\"result\":\"yes\"}]");
+			Census census = censusService.save(c);
+			return new ModelAndView("redirect:/API/survey/saveCensus.do/idSurvey="+census.getIdVotacion()+"&idCensus="+census.getId());
 		}catch(Exception oops){
-			return new String("[{\"result\":\"no\"}]");
+			oops.getCause();
 		}
-
+		return result;
 	}
 	
 	//Devuelve JSon a a votaciones para saber si pueden borrar una vaotacion
@@ -280,10 +281,6 @@ public class CensusController extends AbstractController {
 		return result;
 
 	}
-	
-	
-	
-	
 	 
 	 @RequestMapping(value ="/prueba", method = RequestMethod.GET, produces="application/json")    
 	 public @ResponseBody  String prueba() {  

@@ -1,7 +1,6 @@
 package services;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -49,11 +48,15 @@ public class CensusService {
 	public Census create(int idVotacion, String username,String fecha_inicio,String fecha_fin, String tituloVotacion ) throws ParseException{ 
 		Assert.isTrue(!username.equals(""));
 		Census c = new Census();
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
+		long start_date = Long.parseLong(fecha_inicio);
+		long finish_date = Long.parseLong(fecha_fin);
 		
-		Date fecha_comienzo = format.parse(fecha_inicio);
-		Date fecha_final = format2.parse(fecha_fin);
+		start_date = start_date * 1000;
+		finish_date = finish_date*1000;
+		
+		Date fecha_comienzo = new Date(start_date);
+		Date fecha_final = new Date(finish_date);
+		
 		Assert.isTrue(fecha_comienzo.before(fecha_final));
 		
 		c.setFechaFinVotacion(fecha_final);
@@ -355,7 +358,9 @@ public class CensusService {
 	 * @return census
 	 */
 	public Census findCensusByVote(int idVotacion){
-		return censusRepository.findCensusByVote(idVotacion);
+		Census c = censusRepository.findCensusByVote(idVotacion);
+		Assert.notNull(c);
+		return c;
 	}
 
 	/***
