@@ -42,4 +42,8 @@ cavControllers.controller('listController', function($scope, $http, $rootScope){
 			}
 		});
 	}
+	
+	$scope.goEditCensus=function(survey){
+		window.location="/ADMCensus/census/details.do?censusId="+survey.census;
+	}
 });
