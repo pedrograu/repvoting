@@ -23,11 +23,12 @@ public class SurveyService {
 	private QuestionService questionService;
 	
 	@Transactional
-	public void save(Survey s){
+	public Integer save(Survey s){
 		String cookie = ""; //COOKIE DE LA CONEXIÓN
 		Assert.notNull(s);
 //		Assert.isTrue(isAuthenticated(cookie));
-		surveyRepository.save(s);
+		Survey s1 = surveyRepository.save(s);
+		return s1.getId();
 	}
 	
 	public Survey findOne(int id){

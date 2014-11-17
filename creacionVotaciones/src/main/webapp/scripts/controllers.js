@@ -13,10 +13,20 @@ cavControllers.controller('createController', function($scope, $http, $rootScope
 	};
 	$scope.submit = function(survey){
 		console.log(survey)
+		var dat = null;
 		$http.post("vote/save.do",survey).success(function(data,status){
-			if (status=200)
-				$location.path("/list");
+			if (status=200){
+				$http.get("/ADMCensus/census/create.do?idVotacion="+data.id+"&fecha_inicio="+data.fecha_ini+"&fecha_fin="+data.fecha_fin+"&tituloVotacion="+data.tituloVotacion).success(function(data,status){
+					if (status=200){
+						$location.path("/list");
+					}
+				});
+			}
 		});
+		
+		
+		
+		
 	};
 });
 cavControllers.controller('listController', function($scope, $http, $rootScope){
