@@ -31,12 +31,14 @@ public class SurveyController {
 
 	// Método para guardar la votación creada.
 	@RequestMapping(value = "/save", method = RequestMethod.POST, headers = "Content-Type=application/json")
-	public @ResponseBody String save(@RequestBody String surveyJson)
+	public @ResponseBody Survey save(@RequestBody String surveyJson)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Survey s = mapper.readValue(surveyJson, Survey.class);
 		int i = surveyService.save(s);
-		return "{\"id\":\""+i+"\", \"fecha_ini\":\""+s.getStartDate()+"\", \"fecha_fin\":\""+s.getEndDate()+"\", \"tituloVotacion\":\""+s.getTitle()+"\" }";
+		Survey res = surveyService.findOne(i);
+//		return "{\"id\":\""+i+"\", \"fecha_ini\":\""+s.getStartDate().getDay()+"/"+s.getStartDate().getMonth()+"/"+s.getStartDate().getY+"\", \"fecha_fin\":\""+s.getEndDate()+"\", \"tituloVotacion\":\""+s.getTitle()+"\" }";
+		return res;
 	}
 
 	// Método para guardar la votación con el censo. Relación con CREACION/ADMINISTRACION DE CENSO.

@@ -1,5 +1,5 @@
 <div ng-controller="listController">
 	<ul>
-		<li ng-repeat="survey in surveys">{{survey.title}}</li>
+		<li ng-repeat="survey in surveys">{{survey.title}} | <span ng-click="borrar(survey)">Borrar</span></li>
 	</ul>
 </div>
