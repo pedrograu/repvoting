@@ -51,8 +51,8 @@ public class CensusService {
 		long start_date = Long.parseLong(fecha_inicio);
 		long finish_date = Long.parseLong(fecha_fin);
 		
-		start_date = start_date * 1000;
-		finish_date = finish_date*1000;
+		/*start_date = start_date * 1000;
+		finish_date = finish_date*1000;*/
 		
 		Date fecha_comienzo = new Date(start_date);
 		Date fecha_final = new Date(finish_date);
