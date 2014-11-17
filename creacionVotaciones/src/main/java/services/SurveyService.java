@@ -30,6 +30,10 @@ public class SurveyService {
 		surveyRepository.save(s);
 	}
 	
+	public Survey findOne(int id){
+		Assert.notNull(id);
+		return surveyRepository.findOne(id);
+	}
 	//Método de interacción con el subsistema de Creacion de Censos
 	public void addCensus(Survey s, Census c){
 		Assert.notNull(c);
@@ -52,5 +56,22 @@ public class SurveyService {
 	public List<Survey>allCreatedSurveys(String usernameCreator){
 		List<Survey>res = surveyRepository.allCreatedSurveys(usernameCreator);
 		return res;
+	}
+	
+	public void delete(int id){
+		Assert.notNull(id);
+		
+		surveyRepository.delete(id);
+	}
+	
+	public Boolean posible (int id) {
+		Assert.notNull(id);
+		Survey s = findOne(id);
+		
+		if(s.getCensus()==null){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
