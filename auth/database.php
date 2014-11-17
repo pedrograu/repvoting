@@ -2,10 +2,7 @@
 include_once "variables.php";
 
 function connect() {
-	$con =null;
-	try {
 	$con = new PDO(DB_HOST,DB_USER,DB_PASS);
-	} catch (PDOException $e) {echo $e->GetMessage();}
 	return $con;
 }
 
