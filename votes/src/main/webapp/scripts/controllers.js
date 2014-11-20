@@ -27,13 +27,9 @@ cavControllers.controller('createController', function($scope, $http, $rootScope
 				});
 			}
 		});
-		
-		
-		
-		
 	};
 });
-cavControllers.controller('listController', function($scope, $http, $rootScope){
+cavControllers.controller('listController', function($scope, $http, $route, $rootScope){
 	$rootScope.title = "Lista de votaciones";
 	$http.get("vote/mine.do").success(function(data,status){
 		$scope.surveys = data;
@@ -41,8 +37,10 @@ cavControllers.controller('listController', function($scope, $http, $rootScope){
 	
 	$scope.borrar = function(survey){
 		$http.get("/ADMCensus/census/canDelete.do?idVotacion="+survey.id).success(function(data,status){
-			if (data[0].result){
-				
+			if (data[0].result=="yes"){
+				$http.get("vote/delete.do?id="+survey.id).success(function(data,status){
+					$route.reload();
+				});
 			}
 		});
 	}
