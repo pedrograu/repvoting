@@ -18,7 +18,11 @@ cavControllers.controller('createController', function($scope, $http, $rootScope
 			if (status=200){
 				$http.get("/ADMCensus/census/create.do?idVotacion="+data.id+"&fecha_inicio="+data.startDate+"&fecha_fin="+data.endDate+"&tituloVotacion="+data.title).success(function(data,status){
 					if (status=200){
-						$location.path("/list");
+						$http.get("vote/saveCensus.do?surveyId="+data.idVotacion+"&censusId="+data.id).success(function(data,status){
+							if (status=200){
+								$location.path("/list");
+							}
+						});
 					}
 				});
 			}
