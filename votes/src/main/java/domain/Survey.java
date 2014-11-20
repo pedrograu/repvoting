@@ -39,7 +39,7 @@ public class Survey extends DomainEntity implements Serializable{
 	
 	//Methods
 	@NotBlank
-	@Length(min=5, max=10, message="The field must be between 5 and 10 characters")
+	@Length(min=5, max=100, message="The field must be between 5 and 10 characters")
 	public String getTitle() {
 		return title;
 	}
