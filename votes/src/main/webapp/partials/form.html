@@ -1,32 +1,32 @@
-<form ng-controller="createController">
+<form name="form" ng-controller="createController" novalidate>
 	<div>
 		<label>Titulo:</label>
-		<input type="text" ng-model="survey.title">
+		<input type="text" ng-model="survey.title" name="title" ng-minlength="5" ng-maxlength="100" required>
 	</div>
 	<div>
 		<label>Descripcion:</label>
-		<textarea ng-model="survey.description"></textarea>
+		<textarea ng-model="survey.description" required></textarea>
 	</div>
 	<div>	
 		<label>Fecha Inicio:</label>
-		<input type="date" ng-model="survey.startDate"/>
+		<input type="date" ng-model="survey.startDate" required/>
 	</div>
 	<div>	
 		<label>Fecha Fin:</label>
-		<input type="date" ng-model="survey.endDate"/>
+		<input type="date" ng-model="survey.endDate" required/>
 	</div>
 	<div id="preguntas">
 		<div ng-repeat="q in qs track by $index">
 			<label>Pregunta {{$index+1}}</label>
-			<input type="hidden" value='{{survey.questions[$index].type="question"}}'>
-			<input type="text" ng-model="survey.questions[$index].text"/>
+			<input type="hidden" value='{{survey.questions[$index].type="question"}}' required>
+			<input type="text" ng-model="survey.questions[$index].text" required/>
 		</div>
 	</div>
 	<div>
 		<button type="button" ng-click="addQuestionField()">A&ntilde;adir Pregunta</button>
 	</div>
 	<div>
-		<button type="button" ng-click="submit(survey)">Enviar</button>
+		<button type="button" ng-click="submit(survey)" ng-disabled="form.$invalid">Enviar</button>
 	</div>
 	{{survey}}
 </form>
