@@ -42,12 +42,10 @@ public class SurveyController {
 	}
 
 	// Método para guardar la votación con el censo. Relación con CREACION/ADMINISTRACION DE CENSO.
-	@RequestMapping(value = "/saveCensus", method = RequestMethod.POST, headers = "Content-Type=application/json")
-	public @ResponseBody void saveCensus(@RequestBody String surveyJson)
+	@RequestMapping(value = "/saveCensus", method = RequestMethod.GET)
+	public @ResponseBody void saveCensus(@RequestParam Integer surveyId, @RequestParam Integer censusId)
 			throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		Survey s = mapper.readValue(surveyJson, Survey.class);
-		surveyService.save(s);
+		surveyService.addCensus(surveyId, censusId);
 	}
 
 	// Método que devuelve la lista de votaciones creadas para editarlas.

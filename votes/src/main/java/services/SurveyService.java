@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.SurveyRepository;
-import domain.Census;
 import domain.Survey;
 @Service
 public class SurveyService {
@@ -36,13 +35,14 @@ public class SurveyService {
 		return surveyRepository.findOne(id);
 	}
 	//Método de interacción con el subsistema de Creacion de Censos
-	public void addCensus(Survey s, Census c){
+	public void addCensus(Integer s, Integer c){
+		Survey survey = findOne(s);
 		Assert.notNull(c);
-		Assert.notNull(s);
+		Assert.notNull(survey);
 		
-		Assert.isTrue(s.getCensus()==null);
-		s.setCensus(c);
-		surveyRepository.save(s);
+		Assert.isTrue(survey.getCensus()==null);
+		survey.setCensus(c);
+		surveyRepository.save(survey);
 		
 	}
 	
