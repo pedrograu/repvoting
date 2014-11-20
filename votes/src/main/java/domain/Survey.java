@@ -11,7 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,6 +30,7 @@ public class Survey extends DomainEntity implements Serializable{
 	private String description;
 	private Date startDate;
 	private Date endDate;
+	private Integer census;
 	
 	public Survey() {
 		super();
@@ -70,8 +70,18 @@ public class Survey extends DomainEntity implements Serializable{
 		this.endDate = endDate;
 	}
 	
+	public Integer getCensus() {
+		return census;
+	}
+
+	public void setCensus(Integer census) {
+		this.census = census;
+	}
+
+
+
+
 	//Relationships
-	private Census census;
 	private Collection<Question>questions;
 	private String usernameCreator;
 	
@@ -81,14 +91,6 @@ public class Survey extends DomainEntity implements Serializable{
 
 	public void setUsernameCreator(String usernameCreator) {
 		this.usernameCreator = usernameCreator;
-	}
-
-	@OneToOne()
-	public Census getCensus(){
-		return census;
-	}
-	public void setCensus(Census c){
-		this.census=c;
 	}
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
