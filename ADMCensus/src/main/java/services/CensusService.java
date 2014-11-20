@@ -50,9 +50,7 @@ public class CensusService {
 		Census c = new Census();
 		long start_date = Long.parseLong(fecha_inicio);
 		long finish_date = Long.parseLong(fecha_fin);
-		
-		/*start_date = start_date * 1000;
-		finish_date = finish_date*1000;*/
+
 		
 		Date fecha_comienzo = new Date(start_date);
 		Date fecha_final = new Date(finish_date);
@@ -78,7 +76,8 @@ public class CensusService {
 	 * @param censusId
 	 * @param token
 	 */
-	public void updateUser(int censusId, String username) {
+	public boolean updateUser(int censusId, String username) {
+		boolean res = false;
 		Assert.isTrue(!username.equals(""));
 		Census c = findOne(censusId);
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
@@ -87,12 +86,13 @@ public class CensusService {
 			
 			vpo.remove(username);
 			vpo.put(username, true);
+			res = true;
 		}
 
 		c.setVoto_por_usuario(vpo);
 		save(c);
 		
-		
+		return res;
 	}
 	
 	/****
@@ -190,6 +190,7 @@ public class CensusService {
 	 */
 	public void addUserToCensus(int censusId, String username, String username_add) {
 		Census c = findOne(censusId);
+		Assert.isTrue(votacionActiva(c.getFechaInicioVotacion(), c.getFechaFinVotacion()));
 		Assert.isTrue(c.getUsername().equals(username));
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
 		Assert.isTrue(!vpo.containsKey(username_add));
@@ -210,6 +211,7 @@ public class CensusService {
 	 */
 	public void removeUserToCensus(int censusId, String username, String username_remove) {
 		Census c = findOne(censusId);
+		Assert.isTrue(votacionActiva(c.getFechaInicioVotacion(), c.getFechaFinVotacion()));
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
 		Assert.isTrue(c.getUsername().equals(username));
 		Assert.isTrue(vpo.containsKey(username_remove) && !vpo.get(username_remove));
@@ -343,10 +345,9 @@ public class CensusService {
 		Census c = findOne(censusId);
 		Assert.isTrue(c.getUsername().equals(username));
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
-		Assert.isTrue(vpo.get(username_remove));
-		Assert.isTrue(vpo.containsKey(username_remove));
+		Assert.isTrue(vpo.containsKey(username_remove));//contiene usuario
+		Assert.isTrue(!vpo.get(username_remove));//Miro si ha votado
 		vpo.remove(username_remove);
-
 		c.setVoto_por_usuario(vpo);
 		save(c);
 		

@@ -19,7 +19,7 @@
 		<security:authorize access="isAnonymous()">
 			<li class='has-sub'><a><spring:message code="master.page.api" /></a>
 				<ul>
-					<li><a target="_blank" href="census/create.do?idVotacion=100&fecha_inicio=10/10/2014&fecha_fin=12/11/2015&tituloVotacion=nueva votacion 10"><spring:message code="master.page.census.create" /></a></li>
+					<li><a target="_blank" href="census/create.do?idVotacion=100&fecha_inicio=1316502444473&fecha_fin=1916502444473&tituloVotacion=nueva votacion 10"><spring:message code="master.page.census.create" /></a></li>
 					<li><a target="_blank" href="census/canDelete.do?idVotacion=1"><spring:message code="master.page.census.canDelete" /></a></li> 
 					<li><a target="_blank" href="census/canVote.do?idVotacion=3"><spring:message code="master.page.census.canVote" /></a></li> 
 					<li><a target="_blank" href="census/updateUser.do?idVotacion=3"><spring:message code="master.page.census.update.user" /></a></li> 

@@ -57,7 +57,7 @@ public class CreateCensues {
 	public void createCensus() throws ParseException{
 		
 		
-		Census c= censusService.create(1, "juan22", "10/10/2014", "05/05/2015", "votacion prueba");
+		Census c= censusService.create(1, "juan22", "1416502444473", "1916502444473", "votacion prueba");
 		
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
 		
@@ -70,7 +70,7 @@ public class CreateCensues {
 		censusService.save(c);
 		
 		
-		Census c2= censusService.create(2, "juan22", "10/10/2014", "05/05/2015", "votacion prueba2");
+		Census c2= censusService.create(2, "juan22", "1416502444473", "1916502444473", "votacion prueba2");
 		
 		HashMap<String, Boolean> vpo2 = c.getVoto_por_usuario();
 		
@@ -80,7 +80,7 @@ public class CreateCensues {
 		censusService.save(c2);
 		
 		
-		Census c3= censusService.create(3, "juan23", "10/10/2014", "05/05/2015", "votacion prueba3");
+		Census c3= censusService.create(3, "juan23", "1416502444473", "1916502444473", "votacion prueba3");
 		
 		HashMap<String, Boolean> vpo3 = c3.getVoto_por_usuario();
 		
@@ -89,7 +89,5 @@ public class CreateCensues {
 		c.setVoto_por_usuario(vpo3);
 		
 		censusService.save(c3);
-		
-		System.out.println(vpo3);
 	}
 }

@@ -56,14 +56,13 @@ public class CensusController extends AbstractController {
 	//Recibe parametros de votacion y crea un censo por votacion
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET, produces="application/json")
-	public  ModelAndView create(@RequestParam int idVotacion,@RequestParam String fecha_inicio,@RequestParam String fecha_fin, String tituloVotacion,
+	public  @ResponseBody Census create(@RequestParam int idVotacion,@RequestParam String fecha_inicio,@RequestParam String fecha_fin, String tituloVotacion,
 			@CookieValue("user") String username) throws ParseException{ 
-		ModelAndView result = null;
+		Census result = null;
 		
 		Census  c = censusService.create(idVotacion, username, fecha_inicio, fecha_fin, tituloVotacion);
 		try{
-			Census census = censusService.save(c);
-			return new ModelAndView("redirect:/API/survey/saveCensus.do/idSurvey="+census.getIdVotacion()+"&idCensus="+census.getId());
+			 result = censusService.save(c);
 		}catch(Exception oops){
 			oops.getCause();
 		}
@@ -88,8 +87,12 @@ public class CensusController extends AbstractController {
 	@RequestMapping(value = "/updateUser", method = RequestMethod.GET)
 	public @ResponseBody String updateUser(@RequestParam int idVotacion , @CookieValue("user") String username) {
 		try{
-			censusService.updateUser(idVotacion, username);
-			return new String("{\"result\":\"yes\"}");
+			if(censusService.updateUser(idVotacion, username)){
+				return new String("{\"result\":\"yes\"}");
+			}else{
+				return new String("{\"result\":\"no\"}");
+			}
+			
 		}catch(Exception oops){
 			return new String("{\"result\":\"no\"}");
 		}
