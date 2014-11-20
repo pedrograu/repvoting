@@ -43,7 +43,6 @@
 		if(isset($user) && $user["PASSWORD"]==md5($password)){
 			$result = True;
 		}
-
 		return $result;
 	}
 	// Check if the user is authenticated, using the username in the token
