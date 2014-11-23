@@ -1,19 +1,14 @@
 package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Access;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.AccessType;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 @Entity
 @Access(AccessType.PROPERTY)
 public class Votacion extends DomainEntity implements Serializable {
@@ -24,7 +19,6 @@ public class Votacion extends DomainEntity implements Serializable {
 	String nombre;
 	List<Opcion> opciones;
 	List<Voto> votos;
-	Date createdDate;
 	public Votacion() {
 		votos = new ArrayList<Voto>();
 	}
@@ -44,7 +38,7 @@ public class Votacion extends DomainEntity implements Serializable {
 	
 	@Valid
 	@NotNull
-	@OneToMany(mappedBy="votacion",cascade=CascadeType.ALL)
+	@OneToMany
 	public List<Voto> getVotos() {
 		return votos;
 	}
@@ -61,12 +55,6 @@ public class Votacion extends DomainEntity implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	 @JsonSerialize(using=DateSerializer.class)
-	    public Date getCreatedDate() {
-	        return createdDate;
-	    }
-	    public void setCreatedDate(Date createdDate) {
-	        this.createdDate = createdDate;
-	    }
+	
 
 }

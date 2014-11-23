@@ -2,10 +2,10 @@ package repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import domain.Votacion;
+import domain.Voto;
 
 @Repository
-public interface VotacionRepository extends JpaRepository<Votacion,Integer> {
+public interface VotoRepository extends JpaRepository<Voto,Integer> {
 	
 	
 

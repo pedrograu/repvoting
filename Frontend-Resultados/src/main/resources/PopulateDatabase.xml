@@ -34,7 +34,32 @@
 				<property name="nombre" value="CIU" />
 		</bean>
 	
-	
+				<bean id="voto1" class="domain.Voto">
+					<property name="opcion" ref="opcion1" />
+					<property name="num_votos" value="2014584" />
+				
+				</bean>
+				<bean id="voto2" class="domain.Voto">
+					<property name="opcion" ref="opcion2" />
+					<property name="num_votos" value="124584" />
+					
+				</bean>
+				
+				<bean id="voto3" class="domain.Voto">
+					<property name="opcion" ref="opcion3" />
+					<property name="num_votos" value="6534584" />
+				
+				</bean>
+				
+				<bean id="voto4" class="domain.Voto">
+					<property name="opcion" ref="opcion4" />
+					<property name="num_votos" value="4603215" />
+				</bean>
+				
+				<bean id="voto5" class="domain.Voto">
+					<property name="opcion" ref="opcion5" />
+					<property name="num_votos" value="1703215" />
+				</bean>
 
 
 
@@ -91,38 +116,14 @@
 		</property>
 		<property name="votos">
 			<list>
-				<bean id="voto1" class="domain.Voto">
-					<property name="opcion" ref="opcion1" />
-					<property name="num_votos" value="2014584" />
-					<property name="votacion" ref="votacion1" />
-				</bean>
-				<bean id="voto2" class="domain.Voto">
-					<property name="opcion" ref="opcion2" />
-					<property name="num_votos" value="124584" />
-					<property name="votacion" ref="votacion1" />
-				</bean>
-				
-				<bean id="voto3" class="domain.Voto">
-					<property name="opcion" ref="opcion3" />
-					<property name="num_votos" value="6534584" />
-					<property name="votacion" ref="votacion1" />
-				</bean>
-				
-				<bean id="voto4" class="domain.Voto">
-					<property name="opcion" ref="opcion4" />
-					<property name="num_votos" value="4603215" />
-					<property name="votacion" ref="votacion1" />
-				</bean>
-				
-				<bean id="voto5" class="domain.Voto">
-					<property name="opcion" ref="opcion5" />
-					<property name="num_votos" value="1703215" />
-					<property name="votacion" ref="votacion1" />
-				</bean>
+				<ref bean="voto1" />
+				<ref bean="voto2" />
+				<ref bean="voto3" />
+				<ref bean="voto4" />
+				<ref bean="voto5" />
 			</list>
 		</property>
 		</bean>
-		
 		
 	
 	
