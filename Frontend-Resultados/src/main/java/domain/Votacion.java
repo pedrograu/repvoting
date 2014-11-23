@@ -4,31 +4,47 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.AccessType;
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
-
-public class Votacion implements Serializable {
+@Entity
+@Access(AccessType.PROPERTY)
+public class Votacion extends DomainEntity implements Serializable {
 	/**
 * 
 */
 	private static final long serialVersionUID = 1L;
-	Integer id;
 	String nombre;
-	List<String> opciones;
+	List<Opcion> opciones;
 	List<Voto> votos;
 	Date createdDate;
 	public Votacion() {
 		votos = new ArrayList<Voto>();
 	}
-
-	public List<String> getOpciones() {
+	
+	@Valid
+	@NotNull
+	@OneToMany
+	public List<Opcion> getOpciones() {
 		return opciones;
 	}
 
-	public void setOpciones(List<String> opciones) {
+	
+	public void setOpciones(List<Opcion> opciones) {
 		this.opciones = opciones;
 	}
 
+	
+	@Valid
+	@NotNull
+	@OneToMany(mappedBy="votacion",cascade=CascadeType.ALL)
 	public List<Voto> getVotos() {
 		return votos;
 	}
@@ -37,13 +53,6 @@ public class Votacion implements Serializable {
 		this.votos = votos;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getNombre() {
 		return nombre;

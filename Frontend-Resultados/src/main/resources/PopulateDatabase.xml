@@ -18,6 +18,26 @@
 	
 	<!-- User accounts -->
 
+	<bean id="opcion1" class="domain.Opcion">
+				<property name="nombre" value="PODEMOS" />
+		</bean>
+		<bean id="opcion2" class="domain.Opcion">
+				<property name="nombre" value="PSOE" />
+		</bean>
+		<bean id="opcion3" class="domain.Opcion">
+				<property name="nombre" value="FALANGE" />
+		</bean>
+		<bean id="opcion4" class="domain.Opcion">
+				<property name="nombre" value="PP(Falange II)" />
+		</bean>
+		<bean id="opcion5" class="domain.Opcion">
+				<property name="nombre" value="CIU" />
+		</bean>
+	
+	
+
+
+
 	<bean id="userAccount1" class="security.UserAccount">
 		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
@@ -56,6 +76,63 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	<bean id="votacion1" class="domain.Votacion">
+		<property name="nombre" value="Generales_2011" />
+		<property name="opciones">
+			<list>
+				<ref bean="opcion1" />
+				<ref bean="opcion2" />
+				<ref bean="opcion3" />
+				<ref bean="opcion4" />
+				<ref bean="opcion5" />
+			</list>
+		</property>
+		<property name="votos">
+			<list>
+				<bean id="voto1" class="domain.Voto">
+					<property name="opcion" ref="opcion1" />
+					<property name="num_votos" value="2014584" />
+					<property name="votacion" ref="votacion1" />
+				</bean>
+				<bean id="voto2" class="domain.Voto">
+					<property name="opcion" ref="opcion2" />
+					<property name="num_votos" value="124584" />
+					<property name="votacion" ref="votacion1" />
+				</bean>
+				
+				<bean id="voto3" class="domain.Voto">
+					<property name="opcion" ref="opcion3" />
+					<property name="num_votos" value="6534584" />
+					<property name="votacion" ref="votacion1" />
+				</bean>
+				
+				<bean id="voto4" class="domain.Voto">
+					<property name="opcion" ref="opcion4" />
+					<property name="num_votos" value="4603215" />
+					<property name="votacion" ref="votacion1" />
+				</bean>
+				
+				<bean id="voto5" class="domain.Voto">
+					<property name="opcion" ref="opcion5" />
+					<property name="num_votos" value="1703215" />
+					<property name="votacion" ref="votacion1" />
+				</bean>
+			</list>
+		</property>
+		</bean>
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<!-- Other domain beans come here -->	
 	
