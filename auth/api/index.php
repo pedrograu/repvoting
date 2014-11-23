@@ -47,11 +47,13 @@
 		$result['valid']=tokenIsCorrect($token);
 
 		echo json_encode($result);
+		return json_encode($result);
 	}
 
 	function checkTokenUser($token, $user){
 		$result['valid']=checkUserToken($token, $user);
 
 		echo json_encode($result);
+		return json_encode($result);
 	}
 ?>
