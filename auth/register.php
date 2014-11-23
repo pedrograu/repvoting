@@ -1,5 +1,6 @@
 <?php
 include_once("database.php");
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es" xmlns="http://www.w3.org/1999/xhtml">
@@ -19,39 +20,39 @@ include_once("database.php");
         $('#error').html("");
         if($('#username').val() == undefined || $('#username').val() == ""){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir un nombre de usuario");
+            $('#error').html($('#error').html() + "-Debe elegir un nombre de usuario<br>");
         }else if($('#username').val().length < 5){
             errores = true;
-            $('#error').html($('#error').html() + "<br>El nombre de usuario es demasiado corto (mínimo 5 caracteres)");
+            $('#error').html($('#error').html() + "-El nombre de usuario es demasiado corto (mínimo 5 caracteres)<br>");
         }
         if($('#password').val() == undefined || $('#password').val() == ""){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir una contraseña");
+            $('#error').html($('#error').html() + "-Debe elegir una contraseña<br>");
         }else if($('#password').val().length < 5){
             errores = true;
-            $('#error').html($('#error').html() + "<br>La contraseña es demasiado corta (mínimo 5 caracteres)");
+            $('#error').html($('#error').html() + "-La contraseña es demasiado corta (mínimo 5 caracteres)<br>");
         }
         if($('#email').val() == undefined || $('#email').val() == ""){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir un email");
+            $('#error').html($('#error').html() + "-Debe indicar una dirección de correo electrónico.<br>");
         }else if(!validateEmail($('#email').val())){
             errores = true;
-            $('#error').html($('#error').html() + "<br>El email no es válido");
+            $('#error').html($('#error').html() + "-La dirección de correo electrónico no es válida<br>");
         }
         if($('#genre').val() == undefined || $('#genre').val() == "" || $('#genre').val() == "default" ){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir un género");
+            $('#error').html($('#error').html() + "-Debe elegir un género<br>");
         }
         if($('#age').val() == undefined || $('#age').val() == ""){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir una edad");
+            $('#error').html($('#error').html() + "-Debe elegir una edad<br>");
         }else if($('#age').val() < 1){
             error = true;
-            $('#error').html($('#error').html() + "<br>La edad no es válida");
+            $('#error').html($('#error').html() + "-La edad no es válida<br>");
         }
         if($('#autonomous_community').val() == undefined || $('#autonomous_community').val() == "" || $('#autonomous_community').val() == "default" ){
             errores = true;
-            $('#error').html($('#error').html() + "<br>Debe elegir una comunidad autónoma");
+            $('#error').html($('#error').html() + "-Debe elegir una comunidad autónoma<br>");
         }
         return !errores;
     }
@@ -78,26 +79,73 @@ include_once("database.php");
         <?php
             if(isset($_REQUEST['error'])){
                 $error = $_REQUEST['error'];
-                switch ($error) {
-                    case '1':
-                        echo "Parece que algo ha ido mal...";
-                        break;
-
-                    case '2':
-                        echo "Creo que ya ha mandado suficientes mensajes por hoy. Contestaré lo antes posible.";
-                        break;
+                if($error % 2 != 0){
+                    echo "-Error al insertar en la base de datos.<br>";
+                    $error--;
+                }
+                if($error >= 8192){
+                    echo "-La edad no es válida.<br>";
+                    $error -= 8192;
+                }
+                if($error >= 4096){
+                    echo "-Debe introducir una edad.<br>";
+                    $error-=4096;
+                }
+                if($error >= 2048){
+                    echo "-La comunidad autónoma no es válida.<br>";
+                    $error -= 2048;
+                }
+                if($error >= 1024){
+                    echo "-Debe elegir una comunidad autónoma.<br>";
+                    $error -= 1024;
+                }
+                if($error >= 512){
+                    echo "-El género no es válido.<br>";
+                    $error -= 512;
+                }
+                if($error >= 256){
+                    echo "-Debe elegir un género.<br>";
+                    $error -= 256;
+                }
+                if($error >= 128){
+                    echo "-La dirección de correo electrónico no es válida.<br>";
+                    $error -= 128;
+                }
+                if($error >= 64){
+                    echo "-Debe indicar una dirección de correo electrónico.<br>";
+                    $error -= 64;
+                }
+                if($error >= 32){
+                    echo "-La contraseña es demasiado corta (mínimo 5 caracteres).<br>";
+                    $error -= 32;
+                }
+                if($error >= 16){
+                    echo "-Debe elegir una contraseña.<br>";
+                    $error -= 16;
+                }
+                if($error >= 8){
+                    echo "-Ese nombre de usuario ya existe.<br>";
+                    $error -= 8;
+                }
+                if($error >= 4){
+                    echo "-El nombre de usuario es demasiado corto (mínimo 5 caracteres).<br>";
+                    $error -= 4;
+                }
+                if($error >= 2){
+                    echo "-Debe elegir un nombre de usuario.<br>";
+                    $error -= 2;
                 }
             }
         ?>
     </div>
-	<form id="register_form" onsubmit="return form_process()" method="POST" action="actions/register">
+	<form id="register_form" onsubmit="return form_process()" method="POST" action="action_register.php">
         <table>
             <tr>
-            	<td><label for="username">Nombre de usuario:</label></td><td><input type="text" id="username" name="username" value=<?php echo $contact_form['name'] ?>></td>
-                <td><label for="password">Contraseña</label></td><td><input type="password" id="password" name="password" value=<?php echo $contact_form['email'] ?>></td>
+            	<td><label for="username">Nombre de usuario:</label></td><td><input type="text" id="username" name="username" value=<?php echo $register_form['username'] ?>></td>
+                <td><label for="password">Contraseña</label></td><td><input type="password" id="password" name="password" value=<?php echo $register_form['password'] ?>></td>
             </tr>
             <tr>
-                <td><label for="email">Correo electrónico</label></td><td><input type="text" id="email" name="email" value=<?php echo $contact_form['email'] ?>></td>
+                <td><label for="email">Correo electrónico</label></td><td><input type="text" id="email" name="email" value=<?php echo $register_form['email'] ?>></td>
             	<td><label for="genre">Género</label></td>
                 <td><select id="genre" name="genre">
                     <option value="default">----------</option>
@@ -116,23 +164,23 @@ include_once("database.php");
             		<label for="autonomous_community">Comunidad autónoma</label>
             	</td>
             	<td>
-            		<select name="autonomous_community" id="autonomous_community">
+            	           <select name="autonomous_community" id="autonomous_community">
                         <option value="default" selected="true">----------</option>
             			<option value="Andalucia">Andalucia</option>
-        				<option value="Murcia">Murcia</option>
-        				<option value="Extremadura">Extremadura</option>
-        				<option value="Castilla la Mancha">Castilla la Mancha</option>
-        				<option value="Comunidad Valenciana">Comunidad Valenciana</option>
-        				<option value="Madrid">Madrid</option>
-        				<option value="Castilla y Leon">Castilla y Leon</option>
-        				<option value="Aragon">Aragon</option>
-        				<option value="Cataluña">Cataluña</option>
-        				<option value="La Rioja">La Rioja</option>
-        				<option value="Galicia">Galicia</option>
-        				<option value="Asturias">Asturias</option>
-        				<option value="Cantabria">Cantabria</option>
-        				<option value="Pais Vasco">Pais Vasco</option>
-        				<option value="Navarra">Navarra</option>
+			<option value="Murcia">Murcia</option>
+			<option value="Extremadura">Extremadura</option>
+			<option value="Castilla la Mancha">Castilla la Mancha</option>
+			<option value="Comunidad Valenciana">Comunidad Valenciana</option>
+			<option value="Madrid">Madrid</option>
+			<option value="Castilla y Leon">Castilla y Leon</option>
+			<option value="Aragon">Aragon</option>
+			<option value="Cataluña">Cataluña</option>
+			<option value="La Rioja">La Rioja</option>
+			<option value="Galicia">Galicia</option>
+			<option value="Asturias">Asturias</option>
+			<option value="Cantabria">Cantabria</option>
+			<option value="Pais Vasco">Pais Vasco</option>
+			<option value="Navarra">Navarra</option>
             		</select>
             	</td>
             </tr>
