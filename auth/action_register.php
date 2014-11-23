@@ -24,46 +24,49 @@ if(isset($_SESSION['register_form'])){
 	}else if(strlen($_REQUEST['password']) < 5){
 		$register_form['password'] = $_REQUEST['password'];
 		$error += 32;
+	}else if(!isset($_REQUEST['r_password']) || strcmp($_REQUEST['r_password'], $_REQUEST['password']) != 0){
+		$register_form['password'] = $_REQUEST['password'];
+		$error += 64;
 	}else{
 		$register_form['password'] = $_REQUEST['password'];
 	}
 	if(!isset($_REQUEST['email']) || $_REQUEST['email'] == ""){
 		$register_form['email'] = $_REQUEST['email'];
-		$error += 64;
+		$error += 128;
 	}else if(!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)){
 		$register_form['email'] = $_REQUEST['email'];
-		$error += 128;
+		$error += 256;
 	}else{
 		$register_form['email'] = $_REQUEST['email'];
 	}
 	if(!isset($_REQUEST['genre']) || $_REQUEST['genre'] == "default"){
 		$register_form['genre'] = $_REQUEST['genre'];
-		$error += 256;
+		$error += 512;
 	}else{
 		$genres = ["Masculino", "Femenino"];
 		if(!(in_array($_REQUEST['genre'], $genres))){
 			$register_form['genre'] = $_REQUEST['genre'];
-			$error += 512;
+			$error += 1024;
 		}
 		$register_form['genre'] = $_REQUEST['genre'];
 	}
 	if(!isset($_REQUEST['autonomous_community']) || $_REQUEST['autonomous_community'] == "default"){
 		$register_form['autonomous_community'] = $_REQUEST['autonomous_community'];
-		$error += 1024;
+		$error += 2048;
 	}else{
 		$autonomous_communities = ["Andalucia", "Murcia", "Extremadura", "Castilla la Mancha", "Comunidad Valenciana", "Madrid", "Castilla y Leon", "Aragon", "Cataluña", "La Rioja", "Galicia", "Asturias", "Cantabria", "Pais Vasco", "Navarra"];
 		if(!(in_array($_REQUEST['autonomous_community'], $autonomous_communities))){
 			$register_form['autonomous_community'] = $_REQUEST['autonomous_community'];
-			$error += 2048;
+			$error += 4096;
 		}
 		$register_form['autonomous_community'] = $_REQUEST['autonomous_community'];
 	}
 	if(!isset($_REQUEST['age']) || $_REQUEST['age'] == ""){
 		$register_form['age'] = $_REQUEST['age'];
-		$error += 4096;
+		$error += 8192;
 	}else if(intval($_REQUEST['age']) == 0){
 		$register_form['age'] = $_REQUEST['age'];
-		$error += 8192;
+		$error += 16384;
 	}else{
 		$register_form['age'] = $_REQUEST['age'];
 	}

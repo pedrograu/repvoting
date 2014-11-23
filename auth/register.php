@@ -31,6 +31,9 @@ session_start();
         }else if($('#password').val().length < 5){
             errores = true;
             $('#error').html($('#error').html() + "-La contraseña es demasiado corta (mínimo 5 caracteres)<br>");
+        }else if($('#r_password').val() == undefined || $('#r_password').val() == "" || $('#password').val() != $('#r_password').val()){
+            errores = true;
+            $('#error').html($('#error').html() + "-Las contraseñas no coinciden<br>");
         }
         if($('#email').val() == undefined || $('#email').val() == ""){
             errores = true;
@@ -83,36 +86,40 @@ session_start();
                     echo "-Error al insertar en la base de datos.<br>";
                     $error--;
                 }
-                if($error >= 8192){
+                if($error >= 16384){
                     echo "-La edad no es válida.<br>";
+                    $error -= 16384;
+                }
+                if($error >= 8192){
+                    echo "-Debe introducir una edad.<br>";
                     $error -= 8192;
                 }
                 if($error >= 4096){
-                    echo "-Debe introducir una edad.<br>";
+                    echo "-La comunidad autónoma no es válida.<br>";
                     $error-=4096;
                 }
                 if($error >= 2048){
-                    echo "-La comunidad autónoma no es válida.<br>";
+                    echo "-Debe elegir una comunidad autónoma.<br>";
                     $error -= 2048;
                 }
                 if($error >= 1024){
-                    echo "-Debe elegir una comunidad autónoma.<br>";
+                    echo "-El género no es válido.<br>";
                     $error -= 1024;
                 }
                 if($error >= 512){
-                    echo "-El género no es válido.<br>";
+                    echo "-Debe elegir un género.<br>";
                     $error -= 512;
                 }
                 if($error >= 256){
-                    echo "-Debe elegir un género.<br>";
+                    echo "-La dirección de correo electrónico no es válida.<br>";
                     $error -= 256;
                 }
                 if($error >= 128){
-                    echo "-La dirección de correo electrónico no es válida.<br>";
+                    echo "-Debe indicar una dirección de correo electrónico.<br>";
                     $error -= 128;
                 }
                 if($error >= 64){
-                    echo "-Debe indicar una dirección de correo electrónico.<br>";
+                    echo "-Las contraseñas no coinciden.<br>";
                     $error -= 64;
                 }
                 if($error >= 32){
@@ -142,24 +149,27 @@ session_start();
         <table>
             <tr>
             	<td><label for="username">Nombre de usuario:</label></td><td><input type="text" id="username" name="username" value=<?php echo $register_form['username'] ?>></td>
-                <td><label for="password">Contraseña</label></td><td><input type="password" id="password" name="password" value=<?php echo $register_form['password'] ?>></td>
-            </tr>
-            <tr>
                 <td><label for="email">Correo electrónico</label></td><td><input type="text" id="email" name="email" value=<?php echo $register_form['email'] ?>></td>
-            	<td><label for="genre">Género</label></td>
-                <td><select id="genre" name="genre">
-                    <option value="default">----------</option>
-                    <option value="Masculino">
-                        Masculino
-                    </option>
-                    <option value="Femenino">
-                        Femenino
-                    </option>
-                </select>
-                </td>
             </tr>
             <tr>
-            	<td><label for="age">Edad</label></td><td><input type="number" id="age" name="age" min="1" value=<?php echo $register_form['age']?>></td>
+                <td><label for="password">Contraseña</label></td><td><input type="password" id="password" name="password" value=<?php echo $register_form['password'] ?>></td>
+                <td><label for="r_password">Contraseña</label></td><td><input type="password" id="r_password" name="r_password"></td>
+            </tr>
+            <tr>
+            	   <td><label for="genre">Género</label></td>
+                <td><select id="genre" name="genre">
+                              <option value="default">----------</option>
+                              <option value="Masculino">
+                                  Masculino
+                              </option>
+                              <option value="Femenino">
+                                  Femenino
+                              </option>
+                          </select>
+                </td>
+                <td><label for="age">Edad</label></td><td><input type="number" id="age" name="age" min="1" value=<?php echo $register_form['age']?>></td>
+            </tr>
+            <tr>
             	<td>
             		<label for="autonomous_community">Comunidad autónoma</label>
             	</td>
