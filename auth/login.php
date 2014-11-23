@@ -2,8 +2,6 @@
 include_once 'variables.php';
 
 if(isset($_REQUEST['logout'])) {
-	if(isset($_SESSION))
-		session_destroy();
 	setcookie("token",NULL,time()-3600);
 	setcookie("user",NULL,time()-3600);
 } else if(isset($_SESSION['user'])) {

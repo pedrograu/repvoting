@@ -33,11 +33,7 @@ function getAllUsers() {
 	$con = connect();
 	$stmt = $con->prepare("SELECT USERNAME, PASSWORD, EMAIL FROM USERS");
 	$stmt->execute();
-	$res = null;
-	foreach ($stmt as $user) {
-		$res[] = array('username'=>$user['USERNAME'], 'password'=>$user['PASSWORD'], 'email'=>$user['EMAIL']);
-	}
-	return $res;
+	return $stmt->fetchAll();
 }
 
 function createUser($username, $password, $email, $genre, $age, $aut_comm) {

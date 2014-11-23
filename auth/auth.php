@@ -5,7 +5,7 @@
 	// Set a cookie in client to specify that this client is authenticated
 	function setAuthCookie($username, $password) {
 		if (validUser($username,$password)) {
-			setcookie("token",getToken($username, $password), time()+ONE_YEAR);
+			setcookie("token",getToken($username, md5($password)), time()+ONE_YEAR);
 			setcookie("user",$username, time()+ONE_YEAR);
 		}
 	}
