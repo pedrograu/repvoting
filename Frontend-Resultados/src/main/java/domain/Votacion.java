@@ -1,7 +1,11 @@
 package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 public class Votacion implements Serializable {
 	/**
@@ -12,7 +16,7 @@ public class Votacion implements Serializable {
 	String nombre;
 	List<String> opciones;
 	List<Voto> votos;
-
+	Date createdDate;
 	public Votacion() {
 		votos = new ArrayList<Voto>();
 	}
@@ -48,5 +52,12 @@ public class Votacion implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	 @JsonSerialize(using=DateSerializer.class)
+	    public Date getCreatedDate() {
+	        return createdDate;
+	    }
+	    public void setCreatedDate(Date createdDate) {
+	        this.createdDate = createdDate;
+	    }
 
 }
