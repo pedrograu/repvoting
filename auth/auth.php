@@ -45,9 +45,19 @@
 		}
 		return $result;
 	}
+
 	// Check if the user is authenticated, using the username in the token
 	function tokenIsCorrect($token){
 		$username = explode(':', $token)[0];
 		return checkUserToken($token, $username);
+	}
+
+	function uniqueUsername($username){
+		$result = True;
+		$user = getUser($username);
+		if(isset($user['USERNAME'])){
+			$result = False;
+		}
+		return $result;
 	}
 ?>
