@@ -1,3 +1,7 @@
+package domain;
+
+import java.io.Serializable;
+
 public class Voto implements Serializable {
 /**
 * 
