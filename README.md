@@ -12,3 +12,4 @@ resultados cuando éstos los soliciten.
 Los miembros del grupo encargado de desarrollar dicho subsitema son:
 
 Adrián González Castro
+Álvaro Fernández García
