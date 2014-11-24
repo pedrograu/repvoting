@@ -1,4 +1,5 @@
 <?php
+	header("Access-Control-Allow-Origin: *");
 	include_once "../database.php";
 	include_once "../auth.php";
 	if(!isset($_GET['method']) || $_GET['method'] == ""){
