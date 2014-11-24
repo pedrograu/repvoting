@@ -60,4 +60,13 @@
 		}
 		return $result;
 	}
+
+	function uniqueEmail($email){
+		$result = True;
+		$email = getEmail($email);
+		if(isset($email)){
+			$result = False;
+		}
+		return $result;
+	}
 ?>
