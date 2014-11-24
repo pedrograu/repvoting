@@ -12,11 +12,13 @@ function setUp() {
 	$stmt = $con->query('
 		DROP TABLE IF EXISTS USERS;
 		CREATE TABLE USERS (
-		U_ID INT AUTO_INCREMENT,
-		USERNAME VARCHAR(40) UNIQUE,
-		PASSWORD VARCHAR(40),
-		EMAIL VARCHAR(100) UNIQUE,
-		PRIMARY KEY(U_ID)
+		username 	VARCHAR(30) NOT NULL,
+		password 	VARCHAR(32) NOT NULL,
+		email 	VARCHAR(30) NOT NULL,
+		genero 	ENUM("Femenino","Masculino") NOT NULL,
+		comunidad_autonoma 	ENUM("Andalucia","Murcia","Extremadura","Castilla la Mancha","Comunidad Valenciana","Madrid","Castilla y Leon","Aragon","Cataluña","La Rioja","Galicia","Asturias","Cantabria","Pais Vasco","Navarra")NOT NULL,
+		edad 	TINYINT NOT NULL,
+		PRIMARY KEY(username)
 		);
 		');
 }
@@ -25,6 +27,14 @@ function getUser($user) {
 	$con = connect();
 	$stmt = $con->prepare("SELECT USERNAME, PASSWORD, EMAIL FROM USERS WHERE USERNAME=:user");
 	$stmt->bindParam(':user',$user);
+	$stmt->execute();
+	return $stmt->fetch();
+}
+
+function getEmail($email){
+	$con = connect();
+	$stmt = $con->prepare("SELECT EMAIL FROM USERS WHERE EMAIL=:email");
+	$stmt->bindParam(':email',$email);
 	$stmt->execute();
 	return $stmt->fetch();
 }
