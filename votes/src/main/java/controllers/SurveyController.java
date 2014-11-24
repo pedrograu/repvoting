@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +47,11 @@ public class SurveyController {
 	public @ResponseBody void saveCensus(@RequestParam Integer surveyId, @RequestParam Integer censusId)
 			throws JsonParseException, JsonMappingException, IOException {
 		surveyService.addCensus(surveyId, censusId);
+	}
+	
+	@RequestMapping(value="/getcookies", method=RequestMethod.GET)
+	public @ResponseBody String cookie(@CookieValue("user")String user, @CookieValue("token")String token){
+		return "{\"user\":\""+user+"\", \"token\":\""+token+"\"}";
 	}
 
 	// Método que devuelve la lista de votaciones creadas para editarlas.
