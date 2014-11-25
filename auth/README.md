@@ -5,8 +5,10 @@ Repositorio para el proyecto de EGC del grupo Autenticación para el curso 2014-
 
 ## Integrantes del grupo:
  
-* Daniel Ayala Hernández
-* Daniel de los Reyes Leal
-* Juan Carlos Roldán Salvador
-* Alejandro Sánchez Medina
-* Fidel Mazo Delgado
+* Daniel Ayala Hernández.
+* Juan Luis Casal López.
+* Daniel de los Reyes Leal.
+* Fidel Mazo Delgado.
+* Juan Carlos Roldán Salvador.
+* Alejandro Sánchez Medina.
+
