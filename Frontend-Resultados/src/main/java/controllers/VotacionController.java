@@ -11,24 +11,30 @@
 package controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.OpcionService;
 import services.VotacionService;
 import services.VotoService;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import domain.Opcion;
 import domain.Votacion;
 import domain.Voto;
@@ -64,93 +70,117 @@ public class VotacionController extends AbstractController {
 	public @ResponseBody
 	Object[] get2(@PathVariable("id") int idVotacion) {
 		Votacion votacion = votacionService.find(idVotacion);
-		Object res[] = new Object[votacion.getVotos().size()];
-		int cont = 0;
-		for (Voto v : votacion.getVotos()) {
-			Object res2[] = new Object[2];
-			res2[0] = v.getOpcion().getNombre();
-			res2[1] = v.getNum_votos();
-			res[cont] = res2;
-			cont++;
-		}
+		Object res[] = votacionService.ParseoDatosVisualizacion(votacion);
+
 		return res;
 
 	}
 
-	@RequestMapping(value = "/post2", method = RequestMethod.POST)
+	@RequestMapping(value = "/getPrueba/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	Map<String, Integer> createVotacion2(@RequestBody Map<String, Integer> map) {
+	Map<String, Integer> pruebaSupuestoGetQueHacemosARecuento(
+			@PathVariable("id") int idVotacion) {
+		Votacion votacion = votacionService.find(idVotacion);
 
-		List<Opcion> opciones = new ArrayList<Opcion>();
-		for (String op : map.keySet()) {
-			opciones.add(new Opcion(op));
+		Map<String, Integer> jsonMap = new HashMap<String, Integer>();
+
+		for (Voto v : votacion.getVotos()) {
+			jsonMap.put(v.getOpcion().getNombre(), v.getNum_votos());
 		}
+		return jsonMap;
 
-		opciones = opcionService.save(opciones);
-
-		List<Voto> votos = new ArrayList<Voto>();
-		for (String op : map.keySet()) {
-			Opcion elegida = null;
-			Voto v = new Voto();
-			v.setNum_votos(map.get(op));
-			for (Opcion opp : opciones) {
-				if (opp.getNombre().equals(op)) {
-					elegida = opp;
-					break;
-				}
-			}
-
-			v.setOpcion(elegida);
-			votos.add(v);
-		}
-
-		votos = votoService.save(votos);
-		Votacion vots;
-		vots = new Votacion();
-		vots.setNombre("Votacion");
-		vots.setOpciones(opciones);
-		vots.setVotos(votos);
-		votacionService.save(vots);
-
-		return map;
 	}
 
-	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	@RequestMapping(value = "/postBueno", method = RequestMethod.GET)
 	public @ResponseBody
-	Votacion createVotacion(@RequestBody Votacion vot) {
+	Object[] parseJson(@RequestParam Integer idVotacion) {
 
-		List<Opcion> opciones = new ArrayList<Opcion>();
-		for (Opcion op : vot.getOpciones()) {
-			opciones.add(new Opcion(op.getNombre()));
+		Map<String, Integer> jsonMap = new HashMap<String, Integer>();
+		RestTemplate restTemplate = new RestTemplate();
+		JsonFactory factory = new JsonFactory();
+		ObjectMapper mapper = new ObjectMapper(factory);
+		TypeReference<HashMap<String, Integer>> typeRef = new TypeReference<HashMap<String, Integer>>() {
+		};
+		// esto es para probar el codigo real seria el comentado de los if y
+		// else de abajo
+		String json = restTemplate
+				.getForObject(
+						"http://localhost:8080/Frontend-Resultados/rest/votacion/getPrueba/14.do",
+						String.class);
+		if (idVotacion == null) {
+			/*
+			 * 
+			 * String json = restTemplate .getForObject(
+			 * "http://localhost:8080/test/recuento2?idVotacion=",
+			 * String.class);
+			 */} else {
+			/*
+			 * 
+			 * String json = restTemplate .getForObject(
+			 * "http://localhost:8080/test/recuento2?idVotacion=" + idVotacion,
+			 * String.class);
+			 */
+		}
+		try {
+			// convert JSON string to Map
+			jsonMap = mapper.readValue(json, typeRef);
+
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Error al obtener los datos de la votación:\n" + json);
 		}
 
-		opciones = opcionService.save(opciones);
+		List<Opcion> opciones = new LinkedList<Opcion>();
+		List<Voto> votos = new LinkedList<Voto>();
+		Votacion votacion;
 
-		List<Voto> votos = new ArrayList<Voto>();
-		for (Voto vo : vot.getVotos()) {
-			Opcion elegida = null;
-			Voto v = new Voto();
-			v.setNum_votos(vo.getNum_votos());
-			for (Opcion op : opciones) {
-				if (op.getNombre().equals(vo.getOpcion().getNombre())) {
-					elegida = op;
-					break;
-				}
+		votacion = votacionService.find(idVotacion);
+		if (votacion == null) {
+			// Es decir es una votación nueva eqivale a que no nos pasen el id
+			// osea la peticion
+			// quedaria:http://localhost:8080/test/recuento2?idVotacion=
+			// por eso lo tomamos como integer para que pueda tomar
+			// valor null, ya que los int al ser primitivos no pueden ser null
+
+			for (String opcionString : jsonMap.keySet()) {
+				Opcion opcion = new Opcion(opcionString);
+
+				opcion = opcionService.save(opcion);
+				Voto v = new Voto();
+				Integer numeroVotos = jsonMap.get(opcionString);
+				v.setNum_votos(numeroVotos);
+
+				v.setOpcion(opcion);
+
+				opciones.add(opcion);
+
+				votos.add(v);
+
 			}
 
-			v.setOpcion(elegida);
-			votos.add(v);
+			votos = votoService.save(votos);
+
+			votacion = new Votacion();
+			// Segun lo entendido votacion solo debe tener un campo votos y una
+			// id
+			// pero lo dejo tal y como teniamos planteado
+			votacion.setNombre("Votacion");
+			votacion.setOpciones(opciones);
+			votacion.setVotos(votos);
+			votacionService.save(votacion);
+
 		}
+		// el return devuelve un json con la votacion indicada, hasta que
+		// aclaremos para quien va esta informacion
+		// Realmente este metodo nos sirve para consumir informacion y mandarla
+		// no haria falta los metodos de get anteriores ya que este mismo si
+		// comprueba que la id es nula ya sabe que se trata de un guardar datos
+		// en la base de datos
+		// en cambio si el id es conocido y esta el la base de datos lo extrae y
+		// muestra
+		Object[] res = votacionService.ParseoDatosVisualizacion(votacion);
+		return res;
 
-		votos = votoService.save(votos);
-		Votacion vots;
-		vots = new Votacion();
-		vots.setNombre(vot.getNombre());
-		vots.setOpciones(opciones);
-		vots.setVotos(votos);
-		votacionService.save(vots);
-
-		return vot;
 	}
 
 	@RequestMapping(value = "/get/prueba")

@@ -1,35 +1,34 @@
 package domain;
 
 import java.io.Serializable;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Voto extends DomainEntity implements Serializable {
-	
-// Constructors -----------------------------------------------------------
+
+	// Constructors -----------------------------------------------------------
 
 	public Voto() {
 		super();
+
 	}
 
-// Attributes -------------------------------------------------------------
+	// Attributes -------------------------------------------------------------
 
 	private static final long serialVersionUID = 1L;
 	Opcion opcion;
 	Integer num_votos;
-	
 
 	@Valid
 	@NotNull
-	@OneToOne
+	@ManyToOne
 	public Opcion getOpcion() {
 		return opcion;
 	}
@@ -45,6 +44,5 @@ public class Voto extends DomainEntity implements Serializable {
 	public void setNum_votos(Integer num_votos) {
 		this.num_votos = num_votos;
 	}
-
 
 }
