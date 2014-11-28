@@ -1,0 +1,12 @@
+{
+	"votos": [
+		{
+			"opcion": "opcion1", 
+			"numero": 100
+		}, 
+		{
+			"opcion": "opcion2", 
+			"numero": 250
+		}
+	]
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Agora@US">
+	<meta name="keywords" content="estadisticas">
+	<title>Agora@US</title>
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/estadistica.css">
+	<link rel="stylesheet" href="css/dropdown.css">
+
+	<!-- JS -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/estadisticas.js"></script>
+	<script type="text/javascript">
+		function actualizarDatos(funcion, url) {
+			$.getJSON(url, function(data) {
+				funcion(data, document.getElementById('name_e').value);
+			});
+		};
+
+		var urlDatos = "http://egc.hol.es/datos.json";
+		var urlVotaciones = "http://egc.hol.es/votaciones.json";
+	</script>	
+	<script src="js/highcharts.js"></script>
+	<script src="js/highcharts-3d.js"></script>
+	<script src="js/modules/exporting.js"></script>
+	<script src="js/dropdown.js"></script>
+	
+	<!-- activar el modulo de menu desplegable en el bloque
+	     'available_votings' -->
+	<script type="text/javascript">
+		$(function() {
+			$.getJSON("votaciones.json").done(function(data) {
+				submenu = create_submenu($("#available_votings"));
+				$.each(data["votaciones"], function(k, v) {
+					append_element_to_submenu(submenu, v["nombre"], v["enlace"]);
+				});
+			});
+		});
+	</script>
+
+</head>
+<body onload="actualizarDatos(pie, urlDatos)">
+
+	<input type="hidden" value="Estadisticas" id="name_e"/>
+		<header>
+			<div id="cabecera">
+				<img src="img/agora_house.png" alt="" >
+		        <h3> Una nueva forma de</h3>
+				<h1>Tomar decisiones en grupo</h1>
+		        <p>Agora@US es un sistema software libre ideal para votaciones seguras online donde participan cientos o miles de personas: primarias abiertas, elecciones institucionales, consultas ciudadanas, referéndums. Proveemos soluciones profesionales de innovación democrática </p>
+		    </div>
+		</header>
+
+	<div id="cuerpo">
+		<div id="ullist">
+			<ul class="menu_row">
+				<li id="available_votings" onmouseover="unset_hide_timeout($(this)); show_submenu($(this));" onmouseout="set_hide_timeout($(this));">
+					<a href="javascript:void(0)" onmouseover="unset_hide_timeout($(this).parent());" onmouseout="set_hide_timeout($(this).parent());">
+						Votaciones
+					</a>
+				</li>
+			</ul>
+		</div>
+		<nav id="navegador">
+			<ul>
+				<li>Genero</li>
+				<li>Sexo</li>
+				<li>Lugar</li>
+			</ul>
+		</nav>
+		<section id="seccion">
+			<article id="container">
+			</article>
+		</section>
+		<aside id="menu">
+			<ul>
+				<li onclick="actualizarDatos(pie, urlDatos)">Tarta</li>
+				<li onclick="actualizarDatos(pie3d, urlDatos)">Tarta 3D</li>
+				<li onclick="actualizarDatos(column, urlDatos)">Columnas</li>
+				<li onclick="actualizarDatos(semicircle, urlDatos)">Semi Circulo</li>
+			</ul>
+		</aside>
+		<footer id="pie">
+			Derechos Reservados &copy; 2014-2015
+		</footer>
+	</div>
+</body>
+</html>

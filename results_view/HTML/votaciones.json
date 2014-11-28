@@ -1,0 +1,20 @@
+{
+	"votaciones": [
+		{
+			"nombre": "Andalucia",
+			"enlace": "javascript:alert('Has hecho click en andalucia')"
+		},
+		{
+			"nombre": "Madrid",
+			"enlace": "javascript:alert('Has hecho click en madrid')"
+		},
+		{
+			"nombre": "Galicia",
+			"enlace": "javascript:alert('Has hecho click en galicia')"
+		},
+		{
+			"nombre": "Google",
+			"enlace": "http://google.com"
+		}
+	]
+}
