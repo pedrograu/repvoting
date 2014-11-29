@@ -5,8 +5,8 @@
 	// Set a cookie in client to specify that this client is authenticated
 	function setAuthCookie($username, $password) {
 		if (validUser($username,$password)) {
-			setcookie("token",getToken($username, $password), time()+ONE_YEAR);
-			setcookie("user",$username, time()+ONE_YEAR);	
+			setcookie("token",getToken($username, md5($password)), time()+ONE_YEAR, "/", "", 0, true);
+			setcookie("user",$username, time()+ONE_YEAR, "/", "", 0, true);
 		}
 	}
 
@@ -40,15 +40,33 @@
 	function validUser($username, $password){
 		$result = False;
 		$user = getUser($username);
-		if(isset($user) && $user["password"]==md5($password)){
+		if(isset($user) && $user["PASSWORD"]==md5($password)){
 			$result = True;
 		}
-
 		return $result;
 	}
+
 	// Check if the user is authenticated, using the username in the token
 	function tokenIsCorrect($token){
 		$username = explode(':', $token)[0];
 		return checkUserToken($token, $username);
+	}
+
+	function uniqueUsername($username){
+		$result = True;
+		$user = getUser($username);
+		if(isset($user['USERNAME'])){
+			$result = False;
+		}
+		return $result;
+	}
+
+	function uniqueEmail($email){
+		$result = True;
+		$email = getEmail($email);
+		if(isset($email)){
+			$result = False;
+		}
+		return $result;
 	}
 ?>

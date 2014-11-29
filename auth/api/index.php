@@ -1,7 +1,7 @@
 <?php
+	header("Access-Control-Allow-Origin: *");
 	include_once "../database.php";
 	include_once "../auth.php";
-
 	if(!isset($_GET['method']) || $_GET['method'] == ""){
 		badRequest();
 	}else{
@@ -38,20 +38,22 @@
 	function getUsers(){
 		header('HTTP/1.1 200 OK');
 
-		$users = json_encode(getAllUsers());
-
-		echo $users;
+		echo json_encode(getAllUsers());
 	}
 
 	function checkToken($token){
+		header('HTTP/1.1 200 OK');
 		$result['valid']=tokenIsCorrect($token);
 
 		echo json_encode($result);
+		return json_encode($result);
 	}
 
 	function checkTokenUser($token, $user){
+		header('HTTP/1.1 200 OK');
 		$result['valid']=checkUserToken($token, $user);
 
 		echo json_encode($result);
+		return json_encode($result);
 	}
 ?>

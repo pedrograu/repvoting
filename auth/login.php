@@ -2,7 +2,6 @@
 include_once 'variables.php';
 
 if(isset($_REQUEST['logout'])) {
-	session_destroy();
 	setcookie("token",NULL,time()-3600);
 	setcookie("user",NULL,time()-3600);
 } else if(isset($_SESSION['user'])) {
@@ -31,7 +30,7 @@ if (isset($_REQUEST['error'])) {
 <div id="loginWr">
 	<div id="loginTitle"><?php echo TITLE?></div>
 	<div id="login">
-		<form action="logAttemp.php" method="post">
+		<form action="logAttempt.php" method="post">
 		<table>
 			<tr>
 				<td><label for="user"><img src="img/userSnapshot.png" alt="Nombre de usuario"></label></td>

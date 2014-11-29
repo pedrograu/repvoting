@@ -1,8 +1,5 @@
 <?php
 /*Archivo dedicado a intentar realizar login. Si hay error, se redirige al usuario*/
-
-session_start()
-
 include_once "auth.php";
 
 $user="";
@@ -26,7 +23,7 @@ try{
 	$loginRes = validUser($user, $pass);
 	if($loginRes) {
 		setAuthCookie($user, $pass);
-		header('Location; ./?cont=home')
+		header('Location: ./?cont=home');
 	}else{
 		error("wrongPass");
 	}
@@ -35,7 +32,7 @@ try{
 }
 
 function error($name){
-	header('Location: ./login.php&error='.$name.'$logout=1');
+	header('Location: ./login.php?error='.$name.'&logout=1');
 	die("Está siendo redirigido...");
 }
 ?>
