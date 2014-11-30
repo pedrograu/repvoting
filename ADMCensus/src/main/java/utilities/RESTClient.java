@@ -17,7 +17,7 @@ public class RESTClient {
 	 */
 	public static Collection<String> getListUsernamesByJsonAutentication(){
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.getForObject("http://localhost:8080/ADMCensus/census/prueba.do", String.class);
+		String result = restTemplate.getForObject("http://localhost/auth/api/index.php?method=getUsers", String.class);
 		
 		String[] lista = result.split(",");
 		
@@ -26,13 +26,14 @@ public class RESTClient {
 			String aux = lista[i];
 			String aux2 = "";
 			if(i==0){
-				aux = aux.replace("[{\"username\":\"", "");
+				aux = aux.replace("[{\"USERNAME\":\"", "");
 				aux = aux.replace("\"", "");
+				aux = aux.replace("﻿", "");
 				aux2 = aux;
 				
 			}else{
-				if(aux.contains("username")){
-					aux = aux.replace("{\"username\":\"", "");
+				if(aux.contains("USERNAME")){
+					aux = aux.replace("{\"USERNAME\":\"", "");
 					aux = aux.replace("\"", "");
 					aux2 = aux;
 				}

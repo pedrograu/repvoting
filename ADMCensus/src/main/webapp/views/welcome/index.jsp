@@ -6,11 +6,3 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-
-<script>
-
-document.cookie = "user=juan22; expires=Tue, 12 Jan 2020 12:23:00 GMT; path=/";
-
-
-windows.alert(document.cookie);
-</script>
