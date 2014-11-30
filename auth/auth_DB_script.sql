@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS egcdb;
+﻿CREATE DATABASE IF NOT EXISTS egcdb;
 USE egcdb;
 CREATE TABLE IF NOT EXISTS USERS(
 	username 	VARCHAR(30) NOT NULL,
@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS USERS(
 	email 	VARCHAR(30) NOT NULL,
 	genero 	ENUM('Femenino','Masculino') NOT NULL,
 	comunidad_autonoma 	ENUM('Andalucia','Murcia','Extremadura','Castilla la Mancha','Comunidad Valenciana','Madrid','Castilla y Leon','Aragon','Cataluña','La Rioja','Galicia','Asturias','Cantabria','Pais Vasco','Navarra')NOT NULL,
-	edad 	TINYINT NOT NULL);
+	edad 	TINYINT NOT NULL,
+	PRIMARY KEY(U_ID));
 
 INSERT INTO USERS VALUE('danayaher','7a1b688bc2bb3cc02e0d55c4e0188fb0','danayaher@alum.us.es','Masculino','Andalucia','22');
 INSERT INTO USERS VALUE('dandelea','9cf23ad866a1953b3dd93c80f595ea11','dandelea@alum.us.es','Masculino','Andalucia','22');
