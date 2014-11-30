@@ -22,8 +22,13 @@ try{
 	//Comprueba que hay un usuario con ese nombre y contraseña
 	$loginRes = validUser($user, $pass);
 	if($loginRes) {
+<<<<<<< HEAD
 		setAuthCookie($user, md5($pass));
 		header('Location: http://localhost:8080/ADMCensus/');
+=======
+		setAuthCookie($user, $pass);
+		header('Location: ./?cont=home');
+>>>>>>> 3027a355e22569c626280e02f6ffae9fc890ea44
 	}else{
 		error("wrongPass");
 	}
