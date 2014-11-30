@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*Archivo dedicado a intentar realizar login. Si hay error, se redirige al usuario*/
 include_once "auth.php";
 
@@ -23,7 +23,7 @@ try{
 	$loginRes = validUser($user, $pass);
 	if($loginRes) {
 		setAuthCookie($user, md5($pass));
-		header('Location: ./?cont=home');
+		header('Location: http://localhost:8080/ADMCensus/');
 	}else{
 		error("wrongPass");
 	}
