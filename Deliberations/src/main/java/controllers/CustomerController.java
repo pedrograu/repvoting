@@ -11,6 +11,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +54,7 @@ import org.springframework.web.servlet.ModelAndView;
 import domain.CensusUser;
 import domain.Comment;
 import domain.Hilo;
+import domain.Token;
 import domain.User;
 import security.Authority;
 import security.LoginService;
@@ -426,13 +429,63 @@ public class CustomerController extends AbstractController {
 		
 		
 		
+		//primero, debemos ver si esta logeado en el sistema mediante el token
+		ObjectMapper objectMapper=new ObjectMapper();
+
+		Token resultOfToken=new Token();
+		//para generar el token se envia el password con md5
+		String passwordMd5=new Md5PasswordEncoder().encodePassword(user.getPassword(), null);
+		//depues se vuelve a calcular el md5 del password + nombre de usario antes
+		passwordMd5=user.getUsername()+new Md5PasswordEncoder().encodePassword(passwordMd5, null);
+		//despues de vuelve a calcular el md5 y se le añade el nombre mas dos puntos
+		passwordMd5=user.getUsername()+":"+new Md5PasswordEncoder().encodePassword(passwordMd5, null);
+		String tokenToVerify=passwordMd5;
+		System.out.println("el token para comprobar es: "+tokenToVerify);
+		try {
+			resultOfToken = objectMapper.readValue(new URL("http://localhost/auth/api/checkToken?token="+tokenToVerify),domain.Token.class);
+			System.out.println("el resultado de autenticación es: "+resultOfToken.isValid());
+			
+		} catch (JsonParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+
+		if(resultOfToken.isValid()){//el usuario esta logueado en autenticación, debemos de loguearlo aqui
+			
+			
+		}else{//no esta logueado, a tomar por el fonete
+			
+			
+			
+		}
+		
+		
+		
+		//depues ya podemos loguearlo en el sistema nuestro
+		
+		
+		
+		
 		if(!(bindingResult.hasErrors()) || bindingResult==null){
 			Md5PasswordEncoder md5=new Md5PasswordEncoder();
 			//System.out.println("password encodeado de customer: "+md5.encodePassword(user.getPassword(), null));
 		//	System.out.println("password de base de datos cust: "+userService.findByPrincipal());
-			
+			try{
 			Assert.isTrue(loginService.loadUserByUsername(user.getUsername()).getPassword().equals(md5.encodePassword(user.getPassword(), null)));
-			
+			}catch( Exception e){
+				
+				//pollas
+			}
 
 	        try {
 	            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
