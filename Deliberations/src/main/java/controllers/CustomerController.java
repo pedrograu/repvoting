@@ -463,9 +463,84 @@ public class CustomerController extends AbstractController {
 		if(resultOfToken.isValid()){//el usuario esta logueado en autenticación, debemos de loguearlo aqui
 			
 			
+			
+			
+			
+			if(!(bindingResult.hasErrors()) || bindingResult==null){
+				Md5PasswordEncoder md5=new Md5PasswordEncoder();
+				//System.out.println("password encodeado de customer: "+md5.encodePassword(user.getPassword(), null));
+			//	System.out.println("password de base de datos cust: "+userService.findByPrincipal());
+				try{
+				String passDB=loginService.loadUserByUsername(user.getUsername()).getPassword();
+				String passForm=md5.encodePassword(user.getPassword(), null);
+				System.out.println(passDB);
+				System.out.println(passForm);
+				Assert.isTrue(loginService.loadUserByUsername(user.getUsername()).getPassword().equals(md5.encodePassword(user.getPassword(), null)));
+				}catch( Exception e){
+					System.out.println(e.toString());
+					//no esta en la base de datos, lo creamos en entonces:
+					
+					
+					User user2 = new User();
+					UserAccount userAccount=new UserAccount();
+					Authority a=new Authority();
+					a.setAuthority("CUSTOMER");
+					userAccount.setUsername(user.getUsername());
+					userAccount.setPassword(new Md5PasswordEncoder().encodePassword(user.getPassword(), null));
+					userAccount.addAuthority(a);
+					user2.setName(user.getUsername());
+					user2.setUserAccount(userAccount);
+					user2.setBanned(false);
+					user2.setEmail("user@mail");
+					user2.setLocation("location2");
+					user2.setNumberOfMessages(0);
+					user2.setSurname("usernameSurnam");
+					user2.setComments(new ArrayList<Comment>());
+					user2.setThreads(new ArrayList<Hilo>());
+					
+					userService.save(user2);
+					
+					
+					
+					
+					
+					
+				}
+
+		        try {
+		            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
+		            
+		        	System.out.println(request.toString());
+		        	
+		            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), md5.encodePassword(user.getPassword(), null));
+		            token.setDetails(new WebAuthenticationDetails(request));
+		            DaoAuthenticationProvider authenticator = new DaoAuthenticationProvider();
+		            authenticator.setUserDetailsService(userDetailsService);
+		           
+		            Authentication authentication = authenticator.authenticate(token);
+		            SecurityContextHolder.getContext().setAuthentication(authentication);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            SecurityContextHolder.getContext().setAuthentication(null);
+		        }
+				
+				
+				
+				
+				result=new ModelAndView("customer/listThreads");
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
 		}else{//no esta logueado, a tomar por el fonete
 			
-			
+			result=login();
 			
 		}
 		
@@ -473,45 +548,7 @@ public class CustomerController extends AbstractController {
 		
 		//depues ya podemos loguearlo en el sistema nuestro
 		
-		
-		
-		
-		if(!(bindingResult.hasErrors()) || bindingResult==null){
-			Md5PasswordEncoder md5=new Md5PasswordEncoder();
-			//System.out.println("password encodeado de customer: "+md5.encodePassword(user.getPassword(), null));
-		//	System.out.println("password de base de datos cust: "+userService.findByPrincipal());
-			try{
-			Assert.isTrue(loginService.loadUserByUsername(user.getUsername()).getPassword().equals(md5.encodePassword(user.getPassword(), null)));
-			}catch( Exception e){
-				
-				//pollas
-			}
 
-	        try {
-	            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
-	            
-	        	System.out.println(request.toString());
-	        	
-	            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), md5.encodePassword(user.getPassword(), null));
-	            token.setDetails(new WebAuthenticationDetails(request));
-	            DaoAuthenticationProvider authenticator = new DaoAuthenticationProvider();
-	            authenticator.setUserDetailsService(userDetailsService);
-	           
-	            Authentication authentication = authenticator.authenticate(token);
-	            SecurityContextHolder.getContext().setAuthentication(authentication);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            SecurityContextHolder.getContext().setAuthentication(null);
-	        }
-			
-			
-			
-			
-			result=new ModelAndView("customer/listThreads");
-			
-			
-			
-		}
 		return result;
 		
 		
