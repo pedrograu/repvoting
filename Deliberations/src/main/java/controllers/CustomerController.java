@@ -309,7 +309,7 @@ public class CustomerController extends AbstractController {
 		
 		for (String name: censusUser.getVoto_por_usuario().keySet()){
 			
-			if(name.equalsIgnoreCase(username)){
+			if(name.equals(username)){
 				
 				nameFinal=name;
 			}
@@ -329,10 +329,10 @@ public class CustomerController extends AbstractController {
 		
 		ModelAndView result;	
 		
-		
-		
-		
-		if(userService.findByUsername(nameFinal)!=null){//esta en la base de datos
+		if(nameFinal.equals("")){
+			
+			return loginFromCensusFrom();
+		}else if(userService.findByUsername(nameFinal)!=null){//esta en la base de datos
 			
 			
 			//nos marcamos el login
