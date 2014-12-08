@@ -49,7 +49,7 @@ function getAllUsers() {
 
 function createUser($username, $password, $email, $genre, $age, $autonomous_community) {
 	$con = connect();
-	$stmt = $con->prepare("INSERT INTO USERS VALUES(null, :username, :password, :email, :genre, :autonomous_community, :age");
+	$stmt = $con->prepare("INSERT INTO USERS VALUES(null, :username, :password, :email, :genre, :autonomous_community, :age)");
 	$stmt->bindParam(':username',$username);
 	$stmt->bindParam(':password',$password);
 	$stmt->bindParam(':email',$email);

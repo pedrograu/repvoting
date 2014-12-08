@@ -37,7 +37,7 @@ if(isset($_SESSION['register_form'])){
 		$register_form['email'] = $_REQUEST['email'];
 		$error += 256;
 	}else if(!uniqueEmail($_REQUEST['email'])){
-		$register_form['username'] = $_REQUEST['username'];
+		$register_form['email'] = $_REQUEST['email'];
 		$error += 512;
 	}else{
 		$register_form['email'] = $_REQUEST['email'];
@@ -78,7 +78,7 @@ if(isset($_SESSION['register_form'])){
 		try{
 			createUser($register_form['username'], md5($register_form['password']), $register_form['email'], $register_form['genre'], $register_form['age'], $register_form['autonomous_community']);
 			session_unset($_SESSION['register_form']);
-			header("Location: login.php");
+			header("Location: index.php");
 		}catch(Exception $e){
 			$error += 1;
 			$_SESSION['register_form'] = $register_form;

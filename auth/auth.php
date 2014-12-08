@@ -64,7 +64,7 @@
 	function uniqueEmail($email){
 		$result = True;
 		$email = getEmail($email);
-		if(isset($email)){
+		if(!empty($email)){
 			$result = False;
 		}
 		return $result;
