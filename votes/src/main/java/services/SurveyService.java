@@ -23,9 +23,7 @@ public class SurveyService {
 	
 	@Transactional
 	public Integer save(Survey s){
-		String cookie = ""; //COOKIE DE LA CONEXIÓN
 		Assert.notNull(s);
-//		Assert.isTrue(isAuthenticated(cookie));
 		Survey s1 = surveyRepository.save(s);
 		return s1.getId();
 	}
@@ -61,7 +59,7 @@ public class SurveyService {
 	
 	public void delete(int id){
 		Assert.notNull(id);
-		
+		Survey s= findOne(id);
 		surveyRepository.delete(id);
 	}
 	
