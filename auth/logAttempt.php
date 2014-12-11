@@ -1,5 +1,12 @@
 ﻿<?php
-/*Archivo dedicado a intentar realizar login. Si hay error, se redirige al usuario*/
+/** 
+* @file
+* \brief Operación de login
+* \details Archivo dedicado a intentar realizar login. Si hay error,
+* se redirige al usuario hacia index.php . Si no es así, redirige a la siguiente pantalla
+* del siguiente subsistema.
+*/
+
 include_once "auth.php";
 
 $user="";

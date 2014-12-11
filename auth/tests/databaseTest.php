@@ -1,9 +1,27 @@
 <?php
+/**
+* @file
+* \brief Clase para testear las funciones de operaciones con la base de datos.
+*
+* \details Clase que, usando el framework PHPUnit, pone a prueba a los 
+* distintos metodos database.php sobre operaciones sobre base de datos.
+* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+*/
+
 	include_once "../database.php";
 	include_once "../auth.php";
-	
+
+	/**
+	* \brief Clase para testear las funciones de operaciones con la base de datos.
+	*
+	* \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos metodos database.php sobre operaciones sobre base de datos.</p>
+	* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+	*/
 	class databaseTest extends PHPUnit_Framework_TestCase{
 
+		/**
+		* \brief Inicializacion de la prueba
+		*/
 		protected function setUp() {
 			$con = connect();
 			$stmt = $con->query('
@@ -27,6 +45,9 @@
 				');
 		}
 
+		/**
+		* \brief Finalizacion de la prueba
+		*/
 		function tearDown(){
 			$con = connect();
 			$stmt = $con->query('
@@ -34,6 +55,9 @@
 				');
 		}
 
+		/** 
+		* \brief Test positivo de getUser()
+		*/
 		function test_getUser(){
 			$emails = [
 				"danayaher" => "danayaher@alum.us.es",
@@ -48,7 +72,9 @@
 			$this->assertEquals($emails[$key], $user['EMAIL']);
 		}
 
-
+		/**
+		* \brief Test positivo de getAllUsers()
+		*/
 		function test_getAllUsers(){
 			$emails = array("danayaher", "dandelea", "fidmazdel", "juarolsal", "alesanmed", "juacaslop");
 			$users = getAllUsers();
@@ -57,6 +83,9 @@
 			}
 		}
 
+		/**
+		* \brief Test positivo de createUser()
+		*/
 		function test_createUser(){
 			$username = "nombredeusuario";
 			$password = "password";
@@ -70,7 +99,7 @@
 		}	
 
 		/**
- 		* This test will succeed !!!
+ 		* \brief Test negativo de getUser()
  		* @expectedException PHPUnit_Framework_ExpectationFailedException
  		*/
 		function testNegative_getUser(){

@@ -1,4 +1,11 @@
 <?php
+/** 
+* @file
+* \brief Operación de registro
+* \details Recupera la información del formulario de 
+* registro, comprueba errores y crea el usuario. Devuelve las cabeceras oportunas.
+*/
+
 session_start();
 include_once('database.php');
 include_once('auth.php');

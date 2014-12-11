@@ -1,8 +1,27 @@
 <?php
+	/** 
+	* @file
+	* \brief Clase para testear las funciones de operaciones con tokens.
+	*
+	* \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos métodos
+	* auth.php sobre operaciones con tokens.</p>
+	* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+	*/
+
 	include_once "../auth.php";
-	
+
+	/** 
+	* \brief Clase para testear las funciones de operaciones con tokens.
+	*
+	* \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos métodos
+	* auth.php sobre operaciones con tokens.</p>
+	* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+	*/
 	class tokenTest extends PHPUnit_Framework_TestCase{
 
+		/**
+		* \brief Inicialización de la prueba
+		*/
 		protected function setUp() {
 			$con = connect();
 			$stmt = $con->query('
@@ -26,6 +45,9 @@
 				');
 		}
 
+		/**
+		* \brief Finalización de la prueba
+		*/
 		function tearDown(){
 			$con = connect();
 			$stmt = $con->query('
@@ -33,6 +55,9 @@
 				');
 		}
 
+		/**
+		* \brief Test positivo de checkToken()
+		*/
 		public function test_checkToken(){
 			$username = "dandelea";
 			$password = getUser($username)['PASSWORD'];
@@ -40,6 +65,9 @@
 			$this->assertTrue(tokenIsCorrect($token));
 		}
 
+		/**
+		* \brief Test positivo de chekTokenUser()
+		*/
 		public function test_checkTokenUser(){
 			$username = "dandelea";
 			$password = getUser($username)['PASSWORD'];
@@ -48,7 +76,7 @@
 		}
 
 		/**
- 		* This test will succeed !!!
+ 		* \brief Test negativo de checkToken()
  		* @expectedException PHPUnit_Framework_ExpectationFailedException
  		*/
 		public function testNegative_checkToken(){
@@ -59,7 +87,7 @@
 		}
 
 		/**
- 		* This test will succeed !!!
+ 		* \brief Test negativo de checkTokenUser()
  		* @expectedException PHPUnit_Framework_ExpectationFailedException
  		*/
 		public function testNegative_checkTokenUser(){

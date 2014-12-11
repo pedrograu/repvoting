@@ -1,4 +1,10 @@
 <?php
+/**
+* @file
+* \brief Variables del sistema
+* \details Variables que se usarán en el subsistema: Título, tiempo de la cookie
+*  y credenciales de conexión a la base de datos.
+*/
 
 	define("TITLE", "Agora@US");
 	define("ONE_YEAR", 3600*24*365);

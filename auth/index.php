@@ -1,4 +1,11 @@
 <?php
+/** 
+* @file
+* \brief Inicio de la aplicación
+* \details Pantalla de inicio de la aplicación. Añade cabeceras, muestra 
+* los mensajes de error de logAttempt.php y define la estructura del layout.
+*/
+
 include_once 'variables.php';
 
 if(isset($_REQUEST['logout'])) {
