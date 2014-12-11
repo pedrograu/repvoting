@@ -302,7 +302,7 @@ public class CustomerController extends AbstractController {
 		String nameFinal = "";
 		try{
 		// censusUser=objectMapper.readValue(new URL("http://localhost:8080/ADMCensus/census/json_one_user.do?votacion_id=1&username="+username),CensusUser.class);
-		 censusUser=objectMapper.readValue(new URL("http://localhost:8080/ADMCensus/census/findCensusByVote.do?idVotacion="+1),CensusUser.class);
+		 censusUser=objectMapper.readValue(new URL("http://localhost:8081/ADMCensus/census/findCensusByVote.do?idVotacion="+1),CensusUser.class);
 
 		System.out.println(censusUser.toString());
 		Assert.isTrue(censusUser.getUsername()!=null);
