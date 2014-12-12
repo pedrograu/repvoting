@@ -1,4 +1,4 @@
-var cavApp = angular.module("cavApp",["ngRoute","cavControllers"])
+var cavApp = angular.module("cavApp",["ngRoute","cavControllers","ngCookies"])
 
 cavApp.config(['$routeProvider','$locationProvider', 
 function($routeProvider,$locationProvider) {

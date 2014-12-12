@@ -1,9 +1,12 @@
 package controllers;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,42 +20,52 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import domain.CheckToken;
 import domain.Survey;
 
 @RestController
 @RequestMapping("/vote")
 public class SurveyController {
 
-	// Services
+	// Servicios
 	@Autowired
 	private SurveyService surveyService;
 
-	// Methods
+	// Métodos
 
 	// Método para guardar la votación creada.
 	@RequestMapping(value = "/save", method = RequestMethod.POST, headers = "Content-Type=application/json")
-	public @ResponseBody Survey save(@RequestBody String surveyJson)
+	public @ResponseBody Survey save(@RequestBody String surveyJson, @CookieValue("user")String user, @CookieValue("token") String token)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Survey s = mapper.readValue(surveyJson, Survey.class);
-		int i = surveyService.save(s);
+		
+		CheckToken isValid = new CheckToken();
+		ObjectMapper checkToken = new ObjectMapper();
+		isValid = checkToken.readValue(new URL("http://localhost/auth/api/checkToken?token="+token),domain.CheckToken.class);
+		Assert.isTrue(isValid.getValid());
+		int i =surveyService.save(s);
 		Survey res = surveyService.findOne(i);
-//		return "{\"id\":\""+i+"\", \"fecha_ini\":\""+s.getStartDate().getDay()+"/"+s.getStartDate().getMonth()+"/"+s.getStartDate().getY+"\", \"fecha_fin\":\""+s.getEndDate()+"\", \"tituloVotacion\":\""+s.getTitle()+"\" }";
 		return res;
 	}
-
+	
 	// Método para guardar la votación con el censo. Relación con CREACION/ADMINISTRACION DE CENSO.
 	@RequestMapping(value = "/saveCensus", method = RequestMethod.GET)
 	public @ResponseBody void saveCensus(@RequestParam Integer surveyId, @RequestParam Integer censusId)
 			throws JsonParseException, JsonMappingException, IOException {
 		surveyService.addCensus(surveyId, censusId);
 	}
+	
+	@RequestMapping(value="/getcookies", method=RequestMethod.GET)
+	public @ResponseBody String cookie(@CookieValue("user")String user, @CookieValue("token")String token){
+		return "{\"user\":\""+user+"\", \"token\":\""+token+"\"}";
+	}
 
 	// Método que devuelve la lista de votaciones creadas para editarlas.
 	// Relación con CREACION/ADMINISTRACION DE CENSO.
 	@RequestMapping(value = "/mine", method = RequestMethod.GET)
-	public Collection<Survey> findAllSurveyByCreator() {
-		String creator = "admin";
+	public Collection<Survey> findAllSurveyByCreator(@CookieValue("user")String user) {
+		String creator = user;
 		Collection<Survey> res = surveyService.allCreatedSurveys(creator);
 		return res;
 	}
