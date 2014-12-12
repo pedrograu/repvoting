@@ -5,7 +5,7 @@
 *
 * \details Clase que, usando el framework PHPUnit, pone a prueba a los 
 * distintos metodos database.php sobre operaciones sobre base de datos.
-* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+* \author auth.agora@us
 */
 
 	include_once "../database.php";
@@ -15,7 +15,7 @@
 	* \brief Clase para testear las funciones de operaciones con la base de datos.
 	*
 	* \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos metodos database.php sobre operaciones sobre base de datos.</p>
-	* \author Daniel de los Reyes Leal <dandelea@alum.us.es>
+	* \author auth.agora@us
 	*/
 	class databaseTest extends PHPUnit_Framework_TestCase{
 

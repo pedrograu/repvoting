@@ -2,6 +2,7 @@
 /**
 * @file
 * \brief Métodos de operaciones con votaciones
+* \author auth.agora@us
 */
 
 

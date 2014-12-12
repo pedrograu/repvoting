@@ -4,6 +4,7 @@
 * \brief Inicio de la aplicación
 * \details Pantalla de inicio de la aplicación. Añade cabeceras, muestra 
 * los mensajes de error de logAttempt.php y define la estructura del layout.
+* \author auth.agora@us
 */
 
 include_once 'variables.php';

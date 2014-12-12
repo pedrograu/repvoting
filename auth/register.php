@@ -4,6 +4,7 @@
 * \brief Registro en la aplicación
 * \details Pantalla de registro en la aplicación. Añade cabeceras, muestra 
 * los mensajes de error de action_register.php y define la estructura del layout.
+* \author auth.agora@us
 */
 
 

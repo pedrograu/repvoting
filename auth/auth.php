@@ -2,6 +2,7 @@
 	/** 
 	* @file
 	* \brief Métodos de autenticación.
+	* \author auth.agora@us
 	*/
 	include_once "database.php";
 

@@ -4,6 +4,7 @@
 * \brief Operación de registro
 * \details Recupera la información del formulario de 
 * registro, comprueba errores y crea el usuario. Devuelve las cabeceras oportunas.
+* \author auth.agora@us
 */
 
 session_start();

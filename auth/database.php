@@ -2,6 +2,7 @@
 /** 
 * @file
 * \brief Métodos de operaciones en base de datos
+* \author auth.agora@us
 */
 
 include_once "variables.php";

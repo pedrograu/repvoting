@@ -5,6 +5,7 @@
 * \details Archivo dedicado a intentar realizar login. Si hay error,
 * se redirige al usuario hacia index.php . Si no es así, redirige a la siguiente pantalla
 * del siguiente subsistema.
+* \author auth.agora@us
 */
 
 include_once "auth.php";

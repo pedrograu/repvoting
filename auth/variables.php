@@ -4,6 +4,7 @@
 * \brief Variables del sistema
 * \details Variables que se usarán en el subsistema: Título, tiempo de la cookie
 *  y credenciales de conexión a la base de datos.
+* \author auth.agora@us
 */
 
 	define("TITLE", "Agora@US");

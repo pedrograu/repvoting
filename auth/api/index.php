@@ -4,6 +4,7 @@
 	* \brief API
 	* \details Controlador de la API. Atiende las peticiones y devuelve los resultados
 	* de los métodos o un error cuando proceda.
+	* \author auth.agora@us
 	*/
 
 
