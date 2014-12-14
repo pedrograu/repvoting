@@ -1,6 +1,6 @@
 var cavControllers = angular.module("cavControllers", ['ngCookies']);
 cavControllers.controller('indexController', function($http,$rootScope, $cookieStore, $cookies){
-	$rootScope.title="Agora Voting";
+	$rootScope.title="Ágora@US";
 	$http.get("vote/getcookies.do").success(function(data,status){
 		$cookieStore.put("angularUser",data.user);
 		$cookieStore.put("angularToken",data.token);
