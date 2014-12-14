@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 
+import main.AuthorityImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -46,6 +48,8 @@ public class SurveyController {
 		Assert.isTrue(isValid.getValid());
 		int i =surveyService.save(s);
 		Survey res = surveyService.findOne(i);
+		AuthorityImpl a = new AuthorityImpl();
+		a.postKey(String.valueOf(res.getId()));
 		return res;
 	}
 	
