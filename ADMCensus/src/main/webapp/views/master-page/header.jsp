@@ -33,7 +33,7 @@
 					<li><a href="census/getAllCensusByCreador.do"><spring:message code="master.page.census.byCreator" /></a></li> 
 				</ul>
 			</li>
-			<li class='has-sub'><a href="http://localhost:8080/CreacionAdminiVotaciones"><spring:message code="master.page.votaciones" /></a>
+			<li class='has-sub'><a href="http://localhost:8080/CreacionAdminVotaciones"><spring:message code="master.page.votaciones" /></a>
 
 			</li>
 		</security:authorize>

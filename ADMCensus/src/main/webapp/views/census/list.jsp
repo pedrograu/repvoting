@@ -25,7 +25,7 @@
 	
 	<jstl:if test="${misVotaciones}">
 		<display:column>
-		<a href="">
+		<a href="http://localhost:8000/cabinaus/${row.id}">
 			<img alt="<spring:message	code="census.details" />" src="images/votar.gif" style="height: 25px; width: 25px;">
 			
 		</a>
