@@ -59,7 +59,6 @@ public class SurveyService {
 	
 	public void delete(int id){
 		Assert.notNull(id);
-		Survey s= findOne(id);
 		surveyRepository.delete(id);
 	}
 	
