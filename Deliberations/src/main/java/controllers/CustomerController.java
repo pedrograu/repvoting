@@ -611,6 +611,161 @@ public class CustomerController extends AbstractController {
 		
 	}
 	
+	
+	
+	//login from cookies
+	
+	@RequestMapping("/loginMake2")
+	public ModelAndView loginMake2(@Valid UserAccount user, BindingResult bindingResult, HttpServletRequest request){
+		
+		
+		
+		ModelAndView result=null;
+		
+		if(bindingResult.hasErrors()){
+			
+			
+			result=login();
+			System.out.println(bindingResult.toString());
+			
+		}
+		
+		
+		
+		//primero, debemos ver si esta logeado en el sistema mediante el token
+		ObjectMapper objectMapper=new ObjectMapper();
+
+		Token resultOfToken=new Token();
+		//para generar el token se envia el password con md5
+		String passwordMd5=new Md5PasswordEncoder().encodePassword(user.getPassword(), null);
+		//depues se vuelve a calcular el md5 del password + nombre de usario antes
+		passwordMd5=user.getUsername()+new Md5PasswordEncoder().encodePassword(passwordMd5, null);
+		//despues de vuelve a calcular el md5 y se le añade el nombre mas dos puntos
+		passwordMd5=user.getUsername()+":"+new Md5PasswordEncoder().encodePassword(passwordMd5, null);
+		String tokenToVerify=passwordMd5;
+		System.out.println("el token para comprobar es: "+tokenToVerify);
+		try {
+			resultOfToken = objectMapper.readValue(new URL("http://localhost/auth/api/checkToken?token="+tokenToVerify),domain.Token.class);
+			System.out.println("el resultado de autenticación es: "+resultOfToken.isValid());
+			
+		} catch (JsonParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+
+		if(resultOfToken.isValid()){//el usuario esta logueado en autenticación, debemos de loguearlo aqui
+			
+			
+			
+			
+			
+			if(!(bindingResult.hasErrors()) || bindingResult==null){
+				Md5PasswordEncoder md5=new Md5PasswordEncoder();
+				//System.out.println("password encodeado de customer: "+md5.encodePassword(user.getPassword(), null));
+			//	System.out.println("password de base de datos cust: "+userService.findByPrincipal());
+				try{
+				String passDB=loginService.loadUserByUsername(user.getUsername()).getPassword();
+				String passForm=md5.encodePassword(user.getPassword(), null);
+				System.out.println(passDB);
+				System.out.println(passForm);
+				Assert.isTrue(loginService.loadUserByUsername(user.getUsername()).getPassword().equals(md5.encodePassword(user.getPassword(), null)));
+				}catch( Exception e){
+					System.out.println(e.toString());
+					//no esta en la base de datos, lo creamos en entonces:
+					
+					
+					User user2 = new User();
+					UserAccount userAccount=new UserAccount();
+					Authority a=new Authority();
+					a.setAuthority("CUSTOMER");
+					userAccount.setUsername(user.getUsername());
+					userAccount.setPassword(new Md5PasswordEncoder().encodePassword(user.getPassword(), null));
+					userAccount.addAuthority(a);
+					user2.setName(user.getUsername());
+					user2.setUserAccount(userAccount);
+					user2.setBanned(false);
+					user2.setEmail("user@mail");
+					user2.setLocation("location2");
+					user2.setNumberOfMessages(0);
+					user2.setSurname("usernameSurnam");
+					user2.setComments(new ArrayList<Comment>());
+					user2.setThreads(new ArrayList<Hilo>());
+					
+					userService.save(user2);
+					
+					
+					
+					
+					
+					
+				}
+
+		        try {
+		            // Must be called from request filtered by Spring Security, otherwise SecurityContextHolder is not updated
+		            
+		        	System.out.println(request.toString());
+		        	
+		            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), md5.encodePassword(user.getPassword(), null));
+		            token.setDetails(new WebAuthenticationDetails(request));
+		            DaoAuthenticationProvider authenticator = new DaoAuthenticationProvider();
+		            authenticator.setUserDetailsService(userDetailsService);
+		           
+		            Authentication authentication = authenticator.authenticate(token);
+		            SecurityContextHolder.getContext().setAuthentication(authentication);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            SecurityContextHolder.getContext().setAuthentication(null);
+		        }
+				
+				
+				
+				
+				result=new ModelAndView("customer/listThreads");
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+		}else{//no esta logueado, a tomar por el fonete
+			
+			result=login();
+			
+		}
+		
+		
+		
+		//depues ya podemos loguearlo en el sistema nuestro
+		
+
+		return result;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private ModelAndView createEditModelAndView(domain.Hilo thread){
 		
 		
