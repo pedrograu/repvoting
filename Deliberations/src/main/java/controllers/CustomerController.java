@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.xml.ws.BindingType;
@@ -240,6 +241,52 @@ public class CustomerController extends AbstractController {
 		
 	}
 	
+	//cookies from autenticate
+	
+	 public static String getCookieValue(String cookieName, HttpServletRequest request) {
+		    String value = null;
+		    Cookie[] cookies = request.getCookies();
+		    if (cookies != null) {
+		      int i = 0;
+		      boolean cookieExists = false;
+		      while (!cookieExists && i < cookies.length) {
+		        if (cookies[i].getName().equals(cookieName)) {
+		          cookieExists = true;
+		          value = cookies[i].getValue();
+		        } else {
+		          i++;
+		        }
+		      }
+		    }
+		    return value;
+		  }
+	
+	
+	
+	
+	@RequestMapping("/login2")
+	public ModelAndView login( HttpServletRequest request){
+		
+		ModelAndView result=new ModelAndView("customer/login");
+		
+		UserAccount account=new UserAccount();
+		Authority au=new Authority();
+		au.setAuthority("CUSTOMER");
+		account.addAuthority(au);
+		result.addObject("account", account);
+		//PRUEBA DE COOKIES FROM AUTENTICATE
+		
+		System.out.println(getCookieValue("user", request));
+		System.out.println(getCookieValue("token", request));
+		System.out.println("se deberían haber mostrado");
+		
+		
+		
+		return result; 
+		
+		
+	}
+	
 	
 	@RequestMapping("/login")
 	public ModelAndView login(){
@@ -252,10 +299,20 @@ public class CustomerController extends AbstractController {
 		account.addAuthority(au);
 		result.addObject("account", account);
 		
+		
+		
+		
 		return result; 
 		
 		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//login from autenticate
