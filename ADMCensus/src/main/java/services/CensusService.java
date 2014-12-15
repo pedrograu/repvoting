@@ -128,12 +128,14 @@ public class CensusService {
 		if(c != null && c.getVoto_por_usuario().containsKey(username)){
 			if(!c.getVoto_por_usuario().get(username)){
 				res = "{\"result\":\"yes\"}";
+				
 			}else{
-				res = "[{\"result\":\"no\"}";
+				
+				res = "{\"result\":\"no\"}";
 			}
 			
 		}else{
-			res = "[{\"result\":\"no\"}]";
+			res = "{\"result\":\"no\"}";
 		}
 		
 		return res;
