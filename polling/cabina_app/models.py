@@ -1,3 +1,4 @@
+#encoding: utf-8
 from django.db import models
 
 
@@ -22,7 +23,8 @@ class Vote(models.Model):
     answers = models.TextField(blank=False) #String question1:answer1, question2:answer2
 
     def __unicode__(self):
-        return str(self.id) + " " + str(self.id_poll)
+        return str(self.id) + " " + str(self.id_poll) + str(
+            self.age) + " " + self.genre + " " + self.community + " " + self.answers
 
 
 class Poll(models.Model):

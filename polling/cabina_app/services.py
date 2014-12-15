@@ -43,8 +43,9 @@ def save_vote(vote):
 
 
 def get_poll(id_poll):
-    # r = requests.get('API/survey/getSurvey.do/id=' + str(id_poll))
-    r = requests.get('http://localhost:8000/prueba_id_votacion/' + str(id_poll) + '/')
+    r = requests.get('http://localhost:8080/CreacionAdminVotaciones/vote/survey.do?id=' + str(id_poll))
+    # r = requests.get('http://localhost:8000/prueba_id_votacion/' + str(id_poll) + '/')
+    test = r.json()
     json_poll = json.dumps(r.json())
     poll = json.loads(json_poll, object_hook=json_as_poll)
     return poll
