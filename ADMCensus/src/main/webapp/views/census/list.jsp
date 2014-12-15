@@ -23,6 +23,7 @@
 		</display:column>
 	</jstl:if>
 	
+	
 	<jstl:if test="${misVotaciones}">
 		<display:column>
 		<a href="http://localhost:8000/cabinaus/${row.id}">
