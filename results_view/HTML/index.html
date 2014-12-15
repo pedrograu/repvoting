@@ -15,12 +15,27 @@
 	<script type="text/javascript">
 		function actualizarDatos(funcion, url) {
 			$.getJSON(url, function(data) {
-				funcion(data, document.getElementById('name_e').value);
+				nativeData = convertToNative(data);
+				funcion(nativeData, document.getElementById('name_e').value);
 			});
 		};
 
+		function convertToNative(data) {
+			nativeData = [];
+			$.each(data["votos"], function(k,v) {
+				nativeData.push([ v['opcion']['nombre'], v['num_votos'] ]);
+			});
+
+			return nativeData;
+		}
+
+		function setUrlDatosForId(id) {
+			urlDatos = "/Frontend-Resultados/rest/votacion/get/" + id + ".do";
+			actualizarDatos(pie, urlDatos);
+		}
+
 		var urlDatos = "http://egc.hol.es/datos.json";
-		var urlVotaciones = "http://egc.hol.es/votaciones.json";
+		var urlVotaciones = "/CreacionAdminVotaciones/vote/mine.do";
 	</script>	
 	<script src="js/highcharts.js"></script>
 	<script src="js/highcharts-3d.js"></script>
@@ -31,10 +46,10 @@
 	     'available_votings' -->
 	<script type="text/javascript">
 		$(function() {
-			$.getJSON("votaciones.json").done(function(data) {
+			$.getJSON(urlVotaciones).done(function(data) {
 				submenu = create_submenu($("#available_votings"));
-				$.each(data["votaciones"], function(k, v) {
-					append_element_to_submenu(submenu, v["nombre"], v["enlace"]);
+				$.each(data, function(k, v) {
+					append_element_to_submenu(submenu, v["title"], "javascript:setUrlDatosForId(" + v["id"] + ")");
 				});
 			});
 		});
