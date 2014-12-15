@@ -8,10 +8,13 @@
  * 
  */
 
+
 .jMenu {
-	display: table;
-	margin: 0px;
-	padding: 0px;
+	display: table; 
+	 left:50%;
+	 list-style-type:none;
+	 margin:0 auto;
+	 padding:0;	
 }
 
 /* First level */
@@ -20,17 +23,19 @@
 	display: table-cell;
 	background-color: #322f32;
 	margin: 0px;
+	
 }
 
 .jMenu li a {
 	padding: 10px;
 	display: block;
-	background-color: transparent;
+	background-color: #2680F5;
 	color: white;
 	text-transform: uppercase;
 	cursor: pointer;
 	font-size: 12px;
-	text-decoration: none;
+	text-decoration: none; 
+  	font-family: "fantasy", cursive; 
 }
 
 /* Lower levels */
