@@ -33,9 +33,9 @@
 					<li><a href="census/getAllCensusByCreador.do"><spring:message code="master.page.census.byCreator" /></a></li> 
 				</ul>
 			</li>
-			<li class='has-sub'><a href="http://localhost:8080/CreacionAdminVotaciones"><spring:message code="master.page.votaciones" /></a>
-
-			</li>
+			<li class='has-sub'><a href="http://localhost:8080/CreacionAdminVotaciones"><spring:message code="master.page.votaciones" /></a></li>
+			<li class='has-sub'><a href="http://localhost/results_view/HTML/index.html"><spring:message code="master.page.resultados" /></a></li>
+			<li class='has-sub'><a href="http://localhost:8080/Deliberations"><spring:message code="master.page.deliberaciones" /></a></li>
 		</security:authorize>
 	</ul>
 </div>
