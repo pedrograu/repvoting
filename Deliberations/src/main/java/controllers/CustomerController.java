@@ -343,7 +343,7 @@ public class CustomerController extends AbstractController {
 	public ModelAndView loginFromCensus(String username, HttpServletRequest httpRequest) throws JsonParseException, JsonMappingException, IOException{
 		
 		//implementar
-		
+		ModelAndView result;
 		
 		System.out.println(username);
 		
@@ -355,12 +355,17 @@ public class CustomerController extends AbstractController {
 		//System.out.println(doc.toString());
 		
 		//si  da error, es que el usuario no esta en el censo
-		CensusUser censusUser;
+		CensusUser censusUser=null;
 		String nameFinal = "";
 		try{
 		// censusUser=objectMapper.readValue(new URL("http://localhost:8080/ADMCensus/census/json_one_user.do?votacion_id=1&username="+username),CensusUser.class);
-		 censusUser=objectMapper.readValue(new URL("http://localhost:8080/ADMCensus/census/findCensusByVote.do?idVotacion="+1),CensusUser.class);
-
+		
+			try{
+			censusUser=objectMapper.readValue(new URL("http://localhost:8080/ADMCensus/census/findCensusByVote.do?idVotacion="+1),CensusUser.class);
+			}catch( JsonParseException e){
+				System.out.println(e.toString());
+				return loginFromCensusFrom();
+			}
 		System.out.println(censusUser.toString());
 		Assert.isTrue(censusUser.getUsername()!=null);
 		
@@ -374,7 +379,7 @@ public class CustomerController extends AbstractController {
 		}
 		
 		
-		}catch(JsonParseException e){
+		}catch(Exception e){
 			
 			
 			return loginFromCensusFrom();
@@ -384,7 +389,7 @@ public class CustomerController extends AbstractController {
 		//si no, procedemos
 		
 		
-		ModelAndView result;	
+			
 		
 		if(nameFinal.equals("")){
 			

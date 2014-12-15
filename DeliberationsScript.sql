@@ -14,8 +14,8 @@ create database `Deliberations`;
 use `Deliberations`;
 -- DROP USER 'acme-user';
 -- DROP USER 'acme-manager';
--- CREATE USER 'acme-user'@'%' IDENTIFIED BY 'ACME-Us3r-P@ssw0rd';
--- CREATE USER 'acme-manager'@'%' IDENTIFIED BY 'ACME-M@n@ger-6874';
+CREATE USER 'acme-user'@'%' IDENTIFIED BY 'ACME-Us3r-P@ssw0rd';
+CREATE USER 'acme-manager'@'%' IDENTIFIED BY 'ACME-M@n@ger-6874';
 -- privilegios
 grant select, insert, update, delete
 on `Deliberations`.* to 'acme-user'@'%';
