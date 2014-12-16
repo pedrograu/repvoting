@@ -76,10 +76,10 @@ public class CensusService {
 	 * @param censusId
 	 * @param token
 	 */
-	public boolean updateUser(int censusId, String username) {
+	public boolean updateUser(int idVotacion, String username) {
 		boolean res = false;
 		Assert.isTrue(!username.equals(""));
-		Census c = findOne(censusId);
+		Census c = findCensusByVote(idVotacion);
 		HashMap<String, Boolean> vpo = c.getVoto_por_usuario();
 		
 		if (vpo.containsKey(username) && !vpo.get(username)){
