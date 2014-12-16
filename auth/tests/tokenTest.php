@@ -15,7 +15,7 @@ include_once "../auth.php";
 *
 * \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos métodos
 * auth.php sobre operaciones con tokens.</p>
-* * \author auth.agora@us
+* * \author auth.agoraUS
 */
 class tokenTest extends PHPUnit_Framework_TestCase
 {
