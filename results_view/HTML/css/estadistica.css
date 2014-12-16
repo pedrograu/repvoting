@@ -1,0 +1,104 @@
+#cabecera img{
+	float: right;
+}
+#cabecera{
+	margin: 0 auto;
+	padding: 20px;
+	color: black;
+	background-color: #eeeeee;
+	width: 940px;
+	border-radius: 10px;
+}
+
+#cuerpo {
+	width: 960px;
+	margin: 15px auto;
+}
+#select{
+	text-align: center;
+	vertical-align: bottom;
+}
+#selectList select{
+	background: #f79669;
+	border:none;
+   width: 200px;
+   text-align: center;
+}
+#selectList{
+	border-radius: 5px;
+	vertical-align: bottom;
+	display: inline-block;
+	width: 185px;
+   overflow: hidden;
+}
+.outfloat{
+	clear:both;
+}
+#navegador{
+	float: left;
+	padding: 0px;
+	margin: 0px;
+}
+
+#navegador ul{
+	margin: 0px;
+	padding: 0px;
+}
+
+#navegador li {
+	display: block;
+	list-style: none;
+	padding: 10px;
+	margin: 5px;
+	font: bold 14px verdana, sans-serif;
+	background: #f0ad4e;
+	border-radius: 5px;
+}
+
+#navegador li:hover{
+	background: #243542;
+	cursor: pointer;
+	color:white;
+}
+
+#seccion {
+	float: left;
+	width: 600px;
+	height: 500px;
+	margin: 0px;
+	padding: 10px;
+}
+
+#menu {
+	float: left;
+	width: 150px;
+	margin: 0px;
+	padding: 20px;
+}
+
+#menu ul{
+	margin: 0px;
+	padding: 0px;
+}
+#menu li{
+	display: block;
+	list-style: none;
+	padding: 5px;
+	margin: 5px;
+	font: bold 14px verdana, sans-serif;
+	background: #f0ad4e;
+	border-radius: 5px;
+}
+#menu li:hover{
+	background: #243542;
+	cursor: pointer;
+	color:white;
+}
+
+
+#pie {
+	clear: both;
+	text-align: center;
+	padding: 20px;
+	border-top: 2px solid #999999;
+}

@@ -17,19 +17,24 @@ def verify_user(request):
     return result
 
 
-def can_vote(id_poll):
-    r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll))
+def can_vote(request, id_poll):
+    user = request.COOKIES.get('user')
+    token = request.COOKIES.get('token')
+    cookies = dict(user=user, token=token)
+    r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll), cookies=cookies)
     json_censo = r.json()
     result = False
-    if json_censo['result'] == "Yes":
+    if json_censo['result'] == "yes":
         result = True
     return result
 
 
 def save_vote(vote):
-    # json_vote = vote_as_json(vote)
-    # voto_cifrado = encrypt_rsa(json_vote,CLAVEAQUI)
-    voto_cifrado = vote_as_json(vote)
+    json_vote = vote_as_json(vote)
+    # get_key_rsa solo funciona para los id 999 y 1000 por que verificacion no se integra con creacion
+    # voto_cifrado = encrypt_rsa(json_vote, get_key_rsa(vote.id_poll))
+    # descomentar la linea siguiente cuando la anterior funcione
+    voto_cifrado = json_vote
     data = [('vote', voto_cifrado), ('votation_id', vote.id_poll)]
     data = urllib.urlencode(data)
     path = 'http://php-egc.rhcloud.com/vote.php'
@@ -43,8 +48,7 @@ def save_vote(vote):
 
 
 def get_poll(id_poll):
-    # r = requests.get('API/survey/getSurvey.do/id=' + str(id_poll))
-    r = requests.get('http://localhost:8000/prueba_id_votacion/' + str(id_poll) + '/')
+    r = requests.get('http://localhost:8080/CreacionAdminVotaciones/vote/survey.do?id=' + str(id_poll))
     json_poll = json.dumps(r.json())
     poll = json.loads(json_poll, object_hook=json_as_poll)
     return poll
@@ -102,3 +106,19 @@ def decrypt_rsa(crypto, private_key):
 def generate_rsa(bits=1024):
     (pubkey, privkey) = rsa.newkeys(bits)
     return pubkey, privkey
+
+
+def get_key_rsa(id_votacion):
+    web = urllib2.urlopen("http://www.egcprueba.esy.es/getKeys.php?id=" + str(id_votacion))
+    result = False
+    try:
+        keys = json.load(web)
+        public = keys['Publickey']
+        if public is not None and public is not "":
+            result = public
+        return result
+
+    except ValueError:
+        return False
+
+

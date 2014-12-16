@@ -1,0 +1,3 @@
+#!/bin/sh
+
+curl http://etcd:4001/v2/keys/helix/hlx/visualizacion/A -XPUT -d value=$(hostname -I)
