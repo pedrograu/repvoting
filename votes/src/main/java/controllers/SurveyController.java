@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 
+import main.Authority;
 import main.AuthorityImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class SurveyController {
 		Assert.isTrue(isValid.getValid());
 		int i =surveyService.save(s);
 		Survey res = surveyService.findOne(i);
-		AuthorityImpl a = new AuthorityImpl();
+		Authority a = new AuthorityImpl();
 		a.postKey(String.valueOf(res.getId()));
 		return res;
 	}
