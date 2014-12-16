@@ -10,7 +10,7 @@ Como instalar este subsistema:
 2 maneras:
 
 1. Con eclipse:
-	1.1. Importar como proyecto maven (como en DP) 
+	1.1. Importar como proyecto maven (como en DP) <br>
 	1.2. Ejecutar el script DeliberationsScript.sql
 	1.3. Popular la base de datos (para crear las tablas, no contiene nada)
 	1.4. Es necesario que census este funcionando y auth para poder acceder al subsistema.
