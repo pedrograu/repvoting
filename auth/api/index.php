@@ -1,5 +1,5 @@
 <?php
-    /** 
+    /**
     * @file
     * \brief API
     * \details Controlador de la API. Atiende las peticiones y devuelve los resultados
@@ -15,8 +15,12 @@
         badRequest();
     } else {
         switch ($_GET['method']) {
-            case 'getUsers':
-                getUsers();
+            case 'getUser':
+                if(!isset($_GET['user'])){
+                    badRequest();
+                }else{
+                    getUserAPI($_GET['user']);
+                }
                 break;
             case 'checkToken':
                 if (!isset($_GET['token'])) {
@@ -52,10 +56,19 @@
     * \details Devuelve todos los usuarios de la base de datos.
     * \return JSON
     */
-    function getUsers() {
+    function getUserAPI($username) {
         header('HTTP/1.1 200 OK');
         header('Content-type: application/json');
-        echo json_encode(getAllUsers());
+        $user = getUser($username);
+        $result['username'] = $user[0];
+        $result['password'] = $user[1];
+        $result['email'] = $user[2];
+        $result['genre'] = $user[3];
+        $result['autonomous_community'] = $user[4];
+        $result['age'] = $user[5];
+
+        echo json_encode($result);
+        return json_encode($result);
     }
 
     /**
