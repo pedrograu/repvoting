@@ -7,7 +7,10 @@ Repositorio compartido en el que se desarrollaran varios subsistemas del sistema
 
 Como instalar este subsistema:
 
-2 maneras:
+PARA TODOS LOS CASOS el script DeliberationsSript.sql, NO CREA el usuario acme para no machacar los permisos hacia otras tablas
+por tanto, estan comentados en el script, si los necesitas crear, descomentalos
+
+3 maneras:
 
 1. Con eclipse:
 	1.1. Importar como proyecto maven (como en DP) <br>
