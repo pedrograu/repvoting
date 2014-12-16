@@ -54,6 +54,7 @@
     */
     function getUsers() {
         header('HTTP/1.1 200 OK');
+        header('Content-type: application/json');
         echo json_encode(getAllUsers());
     }
 
@@ -63,6 +64,7 @@
     */
     function checkToken($token) {
         header('HTTP/1.1 200 OK');
+        header('Content-type: application/json');
         $result['valid']=tokenIsCorrect($token);
 
         echo json_encode($result);
@@ -77,6 +79,7 @@
     */
     function checkTokenUser($token, $user) {
         header('HTTP/1.1 200 OK');
+        header('Content-type: application/json');
         $result['valid']=checkUserToken($token, $user);
 
         echo json_encode($result);
