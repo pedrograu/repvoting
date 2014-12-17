@@ -1,11 +1,11 @@
-var cavControllers = angular.module("cavControllers", ['ngCookies']);
-cavControllers.controller('indexController', function($http,$rootScope, $cookieStore, $cookies){
+var cavControllers = angular.module("cavControllers", ['ngCookies','cavFactories']);
+cavControllers.controller('indexController', function($http,$rootScope, $cookieStore, $cookies, $getCookiesAngular){
 	$rootScope.title="Ágora@US";
-	$http.get("vote/getcookies.do").success(function(data,status){
-		$cookieStore.put("angularUser",data.user);
-		$cookieStore.put("angularToken",data.token);
+	var getCookiesAngular = $getCookiesAngular();
+	getCookiesAngular.then(function(result){
+		$rootScope.username=$cookieStore.get("angularUser");
 	});
-	$rootScope.username=$cookieStore.get("angularUser");
+	
 });
 cavControllers.controller('createController', function($scope, $http, $rootScope, $location, $cookieStore){
 	$rootScope.title="Crear votación";

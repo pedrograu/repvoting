@@ -1,18 +1,19 @@
+# encoding: utf-8
 import json
 import urllib
 import urllib2
 import requests
 import rsa
-from cabina_app.models import User, Poll
+from cabina_app.models import User, Poll, Vote
 
 
 def verify_user(request):
     user = request.COOKIES.get('user')
     token = request.COOKIES.get('token')
-    r = requests.get("URL", params={"user": user, "token": token})
+    r = requests.get("http://localhost/auth/api/checkTokenUser?user=" + user + "&token=" + token)
     json_autenticacion = r.json()
     result = False
-    if json_autenticacion['valid'] == "true":
+    if json_autenticacion['valid'] is True:
         result = True
     return result
 
@@ -38,6 +39,7 @@ def save_vote(vote):
     data = [('vote', voto_cifrado), ('votation_id', vote.id_poll)]
     data = urllib.urlencode(data)
     path = 'http://php-egc.rhcloud.com/vote.php'
+    # path = 'http://localhost/almacenamiento/vote.php'
     req = urllib2.Request(path, data)
     response = urllib2.urlopen(req)
     response_data = json.load(response)
@@ -56,29 +58,54 @@ def get_poll(id_poll):
 
 def get_user(request):
     username = request.COOKIES.get('user')
-    user = User()
-    user.username = "juamaiosu"
-    user.password = "123456789"
-    user.email = "juamaiosu@us.es"
-    user.age = 23
-    user.community = "Andalucia"
-    user.genre = "Hombre"
-    # r = requests.get('URL DE AUTENTIFICACION)
-    # URL = 'http://localhost:8000/prueba_id_votacion/' + str(id_votacion) + '/'
-    # r = requests.get(URL)
-    # json_bueno = json.dumps(r.json())
-    # usuario_objeto = json.loads(json_bueno, object_hook=json_as_usuario)
-    # # pprint.pprint(json_bueno)
-    # # print (type(votacion_objeto))
-    # # pprint.pprint(votacion_objeto.questions)
-    # return usuario_objeto
+    r = requests.get("http://localhost/auth/api/getUser?user=" + username)
+    json_auth = json.dumps(r.json())
+    user = json.loads(json_auth, object_hook=json_as_user)
     return user
+
+
+def get_vote(poll, user, post_data):
+
+    answers = []
+    for question in poll.questions:
+        answer_question = post_data[str(question.id)]
+        a = {"question": question.text, "answer_question": answer_question}
+        answers.append(a)
+        # answers = answers + ' ' + question.text + ':' + str(answer_question) + ','
+    # answers = "[" + answers[:-1] + "]"
+
+    vote = Vote()
+    vote.id = 1
+    vote.id_poll = poll.id
+    vote.age = user.age
+    vote.genre = user.genre
+    vote.autonomous_community = user.autonomous_community
+    vote.answers = answers
+    return vote
+
+
+def update_user(request, id_poll):
+    user = request.COOKIES.get('user')
+    token = request.COOKIES.get('token')
+    cookies = dict(user=user, token=token)
+    r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll), cookies=cookies)
+    json_censo = r.json()
+    result = False
+    if json_censo['result'] == "yes":
+        result = True
+    return result
 
 
 def json_as_poll(json_poll):
     poll = Poll()
     poll.__dict__.update(json_poll)
     return poll
+
+
+def json_as_user(json_auth):
+    user = User()
+    user.__dict__.update(json_auth)
+    return user
 
 
 def vote_as_json(vote):
@@ -88,7 +115,7 @@ def vote_as_json(vote):
         'id_poll': vote.id_poll,
         'age': vote.age,
         'genre': vote.genre,
-        'community': vote.community,
+        'autonomous_community': vote.autonomous_community,
         'answers': vote.answers
     }
     return json.dumps(to_dump_vote)

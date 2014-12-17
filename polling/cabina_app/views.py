@@ -1,112 +1,96 @@
-#encoding: utf-8
-import json
+# encoding: utf-8
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from cabina_app.models import Vote, Question,  Poll
-from cabina_app.services import save_vote, get_poll, get_user, vote_as_json, can_vote, get_key_rsa
-import requests
+from cabina_app.services import *
 
 
 @api_view(['GET'])
 def recibe_id_votacion(request, id_poll):
+
+    # Comprobar que el identificador de la votacion es numerico
     try:
         id_poll = int(id_poll)
-    except:
-        informacion = "Lo sentimos, el id de la votacion es incorrecto"
-        return render(request, "informacion.html", {'informacion': informacion})
+    except ValueError:
+        informacion = "El identificador de la votación es erronea"
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
+    # Comprobar que dicho usuario autenticado es valido
+    if not verify_user(request):
+        informacion = "El usuario es erroneo, autenticate de nuevo"
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+
+    # Comprobar que el usuario autenticado puede votar en dicha votacion
     if not can_vote(request, id_poll):
-        informacion = "Usted no tiene acceso a esta votación"
-        return render(request, "informacion.html", {'informacion': informacion})
+        informacion = "Usted no puede votar en esta votación"
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
-    # if not verify_user(request):
-    #     informacion = "El usuario es erroneo, autenticate de nuevo"
-    #     return render(request, "informacion.html", {'informacion': informacion})
-
+    # Construir la votacion
     poll = get_poll(id_poll)
-    user = get_user(request)
 
-    return render(request, "index.html", {'poll': poll,
-                                          'user': user,
-                                          'questions': poll.questions})
+    return render(request, "index.html", {'poll': poll, 'questions': poll.questions})
 
 
 @api_view(['POST'])
 def cabinarecepcion(request):
+
     if request.method == 'POST':
+
         post_data = request.POST
 
-        id_poll = post_data['id_poll']
+        # Comprobar que el identificador de la votacion es numerico
+        try:
+            id_poll = int(post_data['id_poll'])
+        except ValueError:
+            informacion = "El identificador de la votación es erronea"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+
+        # Comprobar que dicho usuario autenticado es valido
+        if not verify_user(request):
+            informacion = "El usuario es erroneo, autenticate de nuevo"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+
+        # Comprobar que el usuario autenticado puede votar en dicha votacion
+        if not can_vote(request, id_poll):
+            informacion = "Usted no puede votar en esta votación"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+
+        # Construir la votacion
         poll = get_poll(id_poll)
 
-        username = post_data['username']
+        # Construir el usuario
         user = get_user(request)
 
-        # if user.username != username or not verify_user():
-        #     informacion = "El usuario es erroneo, autenticate de nuevo"
-        #     return render(request, "informacion.html", {'informacion': informacion})
+        # Actualizar el estado de la votacion del usuario
+        if not update_user(request, poll.id):
+            informacion = "No se ha podido actualizar el estado de la votación del usuario"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
-        if not can_vote(request, id_poll):
-            informacion = "Usted no tiene acceso a esta votación"
-            return render(request, "informacion.html", {'informacion': informacion})
+        # Construir voto
+        vote = get_vote(poll, user, post_data)
 
-        answers = ''
-        for question in poll.questions:
-            answer_question = post_data[str(question.id)]
-            answers = answers + " " + question.text + ":" + str(answer_question) + ","
-        answers = "{" + answers[:-1] + " }"
 
-        vote = Vote()
-        vote.id = 1
-        vote.id_poll = poll.id
-        vote.age = user.age
-        vote.genre = user.genre
-        vote.community = user.community
-        vote.answers = answers
+        # Almacenar el voto
+        if not save_vote(vote):
+            informacion = "No se ha podido almacenar el voto"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
-        save_vote(vote)
-        json_vote = vote_as_json(vote)
-
-        informacion = "Votacion guardada con éxito, por favor diríjase a la siguiente direccion:"
+        informacion = "Votacion guardada con éxito"
         visitar_web = True
+        json_vote = vote_as_json(vote)
         return render(request, "informacion.html", {'informacion': informacion, 'visitar_web': visitar_web,
-                                                    'json_vote': json_vote})
+                                                    'json_vote': json_vote, 'error': False})
     else:
         informacion = "Lo sentimos, el metodo solicitado no esta disponible"
-        return render(request, "informacion.html", {'informacion': informacion})
-
-
-# este metodo simula el devolver un voto
-@api_view(['GET'])
-def prueba_id_voto(request, id_voto):
-    voto1 = Vote()
-    voto1.id_voto = id_voto
-    voto1.age = 20
-    voto1.community = "Andalucia"
-    voto1.genre = "HOMBRE"
-    voto1.id_poll = id_voto
-    voto1.answers = "¿Desea aprobar EGC?:SI"
-
-    to_dump_voto = {
-        'id': str(voto1.id),
-        'id_poll': str(voto1.id_poll),
-        'answers': voto1.answers,
-        'age': str(voto1.age),
-        'genre': voto1.genre,
-        'community': voto1.community,
-    }
-
-    json_data = json.dumps(to_dump_voto)
-    return HttpResponse(json_data, mimetype='application/json')
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
 
 @api_view(['GET'])
 def prueba_rsa(request, id_votacion):
     key = get_key_rsa(id_votacion)
-    if key == False:
+    if key is False:
         informacion = "Hubo un problema con la clave RSA, contacte con verificación"
-        return render(request, "informacion.html", {'informacion': informacion})
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
     json_data = json.dumps(key)
     return HttpResponse(json_data, mimetype='application/json')
