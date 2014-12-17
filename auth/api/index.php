@@ -22,6 +22,9 @@
                     getUserAPI($_GET['user']);
                 }
                 break;
+             case 'getUsers':
+                getUsers();
+                break;
             case 'checkToken':
                 if (!isset($_GET['token'])) {
                     badRequest();
@@ -52,8 +55,8 @@
     }
 
     /**
-    * \brief Obtener usuarios
-    * \details Devuelve todos los usuarios de la base de datos.
+    * \brief Obtener un usuario
+    * \details Devuelve todos los datos de un usuario de la base de datos.
     * \return JSON
     */
     function getUserAPI($username) {
@@ -69,6 +72,17 @@
 
         echo json_encode($result);
         return json_encode($result);
+    }
+
+    /**
+    * \brief Obtener usuarios
+    * \details Devuelve todos los usuarios de la base de datos.
+    * \return JSON
+    */
+    function getUsers() {
+        header('HTTP/1.1 200 OK');
+        header('Content-type: application/json');
+        echo json_encode(getAllUsers());
     }
 
     /**
