@@ -18,7 +18,6 @@ public class RESTClient {
 	public static Collection<String> getListUsernamesByJsonAutentication(){
 		RestTemplate restTemplate = new RestTemplate();
 		String result = restTemplate.getForObject("http://localhost/auth/api/index.php?method=getUsers", String.class);
-		
 		String[] lista = result.split(",");
 		
 		Collection<String> usernames = new ArrayList<String>();
@@ -26,14 +25,14 @@ public class RESTClient {
 			String aux = lista[i];
 			String aux2 = "";
 			if(i==0){
-				aux = aux.replace("[{\"USERNAME\":\"", "");
+				aux = aux.replace("[{\"username\":\"", "");
 				aux = aux.replace("\"", "");
 				aux = aux.replace("﻿", "");
 				aux2 = aux;
 				
 			}else{
-				if(aux.contains("USERNAME")){
-					aux = aux.replace("{\"USERNAME\":\"", "");
+				if(aux.contains("username")){
+					aux = aux.replace("{\"username\":\"", "");
 					aux = aux.replace("\"", "");
 					aux2 = aux;
 				}
@@ -48,6 +47,7 @@ public class RESTClient {
 		return usernames;
 	}
 
+	
 	public static void main(String[] args) throws IOException {
 		Collection<String> usernames = getListUsernamesByJsonAutentication();
 		for(String st: usernames){
