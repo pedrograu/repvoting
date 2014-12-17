@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -71,5 +72,9 @@ public class SurveyService {
 		}else{
 			return false;
 		}
+	}
+
+	public Collection<Survey> allSurveys() {
+		return surveyRepository.findAll();
 	}
 }
