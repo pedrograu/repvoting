@@ -82,7 +82,17 @@
     function getUsers() {
         header('HTTP/1.1 200 OK');
         header('Content-type: application/json');
-        echo json_encode(getAllUsers());
+        $users=array();
+        foreach (getAllUsers() as $user) {
+            $addedUser['username'] = $user['USERNAME'];
+            $addedUser['password'] = $user['PASSWORD'];
+            $addedUser['email'] = $user['EMAIL'];
+            $addedUser['genre'] = $user['GENRE'];
+            $addedUser['autonomous_community'] = $user['AUTONOMOUS_COMMUNITY'];
+            $addedUser['age'] = $user['AGE'];
+            $users[] = $addedUser;
+        }
+        echo json_encode($users);
     }
 
     /**
