@@ -27,6 +27,9 @@ def recibe_id_votacion(request, id_poll):
 
     # Construir la votacion
     poll = get_poll(id_poll)
+    if poll is None:
+        informacion = "El identificador de la votación es erronea"
+        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
     return render(request, "index.html", {'poll': poll, 'questions': poll.questions})
 
@@ -57,29 +60,31 @@ def cabinarecepcion(request):
 
         # Construir la votacion
         poll = get_poll(id_poll)
+        if poll is None:
+            informacion = "El identificador de la votación es erronea"
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
         # Construir el usuario
         user = get_user(request)
-
-        # Actualizar el estado de la votacion del usuario
-        if not update_user(request, poll.id):
-            informacion = "No se ha podido actualizar el estado de la votación del usuario"
+        if user is None:
+            informacion = "El usuario es erroneo"
             return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
         # Construir voto
         vote = get_vote(poll, user, post_data)
 
-
-        # Almacenar el voto
-        if not save_vote(vote):
-            informacion = "No se ha podido almacenar el voto"
+        # Actualizar el estado de la votacion del usuario
+        if not update_user(request, poll.id):
+            informacion = "No se ha podido actualizar el estado de la votación del usuario"
             return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+        else:
+            # Almacenar el voto
+            if not save_vote(vote):
+                informacion = "No se ha podido almacenar el voto"
+                return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
         informacion = "Votacion guardada con éxito"
-        visitar_web = True
-        json_vote = vote_as_json(vote)
-        return render(request, "informacion.html", {'informacion': informacion, 'visitar_web': visitar_web,
-                                                    'json_vote': json_vote, 'error': False})
+        return render(request, "informacion.html", {'informacion': informacion, 'error': False})
     else:
         informacion = "Lo sentimos, el metodo solicitado no esta disponible"
         return render(request, "informacion.html", {'informacion': informacion, 'error': True})
