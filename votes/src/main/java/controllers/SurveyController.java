@@ -99,7 +99,7 @@ public class SurveyController {
 	
 	// Método que devuelve la lista completa de finalizadas. Relación con
 	// VISUALIZACION.
-	@RequestMapping(value = "/finishedSurveys", method = RequestMethod.GET)
+	@RequestMapping(value = "/allSurveys", method = RequestMethod.GET)
 	public Collection<Survey> findAllSurveys() {
 		Collection<Survey> res = surveyService.allSurveys();
 		return res;
