@@ -1,0 +1,37 @@
+{
+    "votes": [
+        {
+            "id": "None",
+            "community": "Andalucia",
+            "answers": "¿DeseaaprobarEGC?: SI",
+            "age": "20",
+            "id_poll": "2",
+            "genre": "HOMBRE"
+        },
+        {
+            "id": "None",
+            "community": "Extremadura",
+            "answers": "¿DeseaaprobarEGC?: SI",
+            "age": "20",
+            "id_poll": "2",
+            "genre": "HOMBRE"
+        },
+        {
+            "id": "None",
+            "community": "Galicia",
+            "answers": "¿DeseaaprobarEGC?: NO",
+            "age": "20",
+            "id_poll": "2",
+            "genre": "HOMBRE"
+        },
+        {
+            "id": "None",
+            "community": "Andalucia",
+            "answers": "¿DeseaaprobarEGC?: SI",
+            "age": "20",
+            "id_poll": "2",
+            "genre": "HOMBRE"
+        }
+    ],
+    "msg": 1
+}
