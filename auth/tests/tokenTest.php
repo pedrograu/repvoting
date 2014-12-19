@@ -10,6 +10,7 @@
 */
 
 include_once "../auth.php";
+include_once "../database.php";
 
 /** 
 * \brief Clase para testear las funciones de operaciones con tokens.
