@@ -8,33 +8,37 @@ from cabina_app.models import User, Poll, Vote
 
 
 def verify_user(request):
-    user = request.COOKIES.get('user')
-    token = request.COOKIES.get('token')
-    r = requests.get("http://localhost/auth/api/checkTokenUser?user=" + user + "&token=" + token)
-    json_autenticacion = r.json()
-    result = False
-    if json_autenticacion['valid'] is True:
-        result = True
+    try:
+        user = request.COOKIES.get('user')
+        token = request.COOKIES.get('token')
+        r = requests.get("http://localhost/auth/api/checkTokenUser?user=" + str(user) + "&token=" + str(token))
+        json_autenticacion = r.json()
+        result = False
+        if json_autenticacion['valid'] is True:
+            result = True
+    except ValueError:
+        result = False
     return result
 
 
 def can_vote(request, id_poll):
-    user = request.COOKIES.get('user')
-    token = request.COOKIES.get('token')
-    cookies = dict(user=user, token=token)
-    r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll), cookies=cookies)
-    json_censo = r.json()
-    result = False
-    if json_censo['result'] == "yes":
-        result = True
+    try:
+        user = request.COOKIES.get('user')
+        token = request.COOKIES.get('token')
+        cookies = dict(user=user, token=token)
+        r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll), cookies=cookies)
+        json_censo = r.json()
+        result = False
+        if json_censo['result'] == "yes":
+            result = True
+    except ValueError:
+        result = False
     return result
 
 
 def save_vote(vote):
     json_vote = vote_as_json(vote)
-    # get_key_rsa solo funciona para los id 999 y 1000 por que verificacion no se integra con creacion
-    # voto_cifrado = encrypt_rsa(json_vote, get_key_rsa(vote.id_poll))
-    # descomentar la linea siguiente cuando la anterior funcione
+    # voto_cifrado = rsa.encrypt(json_vote, get_key_rsa(vote.id_poll))
     voto_cifrado = json_vote
     data = [('vote', voto_cifrado), ('votation_id', vote.id_poll)]
     data = urllib.urlencode(data)
@@ -50,17 +54,23 @@ def save_vote(vote):
 
 
 def get_poll(id_poll):
-    r = requests.get('http://localhost:8080/CreacionAdminVotaciones/vote/survey.do?id=' + str(id_poll))
-    json_poll = json.dumps(r.json())
-    poll = json.loads(json_poll, object_hook=json_as_poll)
+    try:
+        r = requests.get('http://localhost:8080/CreacionAdminVotaciones/vote/survey.do?id=' + str(id_poll))
+        json_poll = json.dumps(r.json())
+        poll = json.loads(json_poll, object_hook=json_as_poll)
+    except ValueError:
+        poll = None
     return poll
 
 
 def get_user(request):
-    username = request.COOKIES.get('user')
-    r = requests.get("http://localhost/auth/api/getUser?user=" + username)
-    json_auth = json.dumps(r.json())
-    user = json.loads(json_auth, object_hook=json_as_user)
+    try:
+        username = request.COOKIES.get('user')
+        r = requests.get("http://localhost/auth/api/getUser?user=" + username)
+        json_auth = json.dumps(r.json())
+        user = json.loads(json_auth, object_hook=json_as_user)
+    except ValueError:
+        user = None
     return user
 
 
@@ -85,14 +95,17 @@ def get_vote(poll, user, post_data):
 
 
 def update_user(request, id_poll):
-    user = request.COOKIES.get('user')
-    token = request.COOKIES.get('token')
-    cookies = dict(user=user, token=token)
-    r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll), cookies=cookies)
-    json_censo = r.json()
-    result = False
-    if json_censo['result'] == "yes":
-        result = True
+    try:
+        user = request.COOKIES.get('user')
+        token = request.COOKIES.get('token')
+        cookies = dict(user=user, token=token)
+        r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll), cookies=cookies)
+        json_censo = r.json()
+        result = False
+        if json_censo['result'] == "yes":
+            result = True
+    except ValueError:
+        result = False
     return result
 
 
