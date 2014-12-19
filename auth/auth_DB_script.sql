@@ -16,5 +16,4 @@ INSERT INTO USERS VALUE(NULL, 'fidmazdel','b746ac06bca08e9c60f1e67f9a978253','fi
 INSERT INTO USERS VALUE(NULL, 'juarolsal','9f1644a43dbfbaf05fda6ec642430b4d','juarolsal@alum.us.es','Masculino','Andalucia','22');
 INSERT INTO USERS VALUE(NULL, 'alesanmed','2c678f01c9222350776420037a69a1db','alesanmed@alum.us.es','Masculino','Andalucia','22');
 INSERT INTO USERS VALUE(NULL, 'juacaslop','f8e70dcaaf443f4fadd34959adaca9d2','juacaslop@alum.us.es','Masculino','Andalucia','27');
-GRANT SELECT, INSERT, DELETE ON egcdb TO usuario@'localhost' IDENTIFIED BY 'password';
 COMMIT;
