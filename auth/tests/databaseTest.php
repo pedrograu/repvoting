@@ -9,8 +9,8 @@
 * \author auth.agoraUS
 */
 
-include_once "../database.php";
-include_once "../auth.php";
+include_once "/var/lib/jenkins/jobs/Pruebas automáticas con PHPUnit/workspace/auth/database.php";
+include_once "/var/lib/jenkins/jobs/Pruebas automáticas con PHPUnit/workspace/auth/auth.php";
 
     /**
 * \brief Clase para testear las funciones de operaciones con la base de datos.
