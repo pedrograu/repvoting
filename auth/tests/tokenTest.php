@@ -1,6 +1,7 @@
 <?php
 /** 
 * @file
+* @group tests
 * \brief Clase para testear las funciones de operaciones con tokens.
 *
 * \details Clase que, usando el framework PHPUnit, pone a prueba a los distintos métodos
