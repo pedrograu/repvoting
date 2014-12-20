@@ -1,0 +1,18 @@
+{
+    "questions": [
+        {
+            "text": "Quieres que se legalice el matrimonio entre personas del mismo sexo",
+            "id": 1
+            "answer": "SI"
+        },
+        {
+            "text": "Te gusta la asignaruta de EGC",
+            "id": 2
+        }
+    ],
+    "id": "1",
+    "startDate": "01/11/2014",
+    "title": "El Referendum 74",
+    "description": "Para legalizar el matrimonio entre personas del mismo sexo.",
+    "endDate": "25/11/2014"
+}
