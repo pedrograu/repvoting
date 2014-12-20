@@ -341,13 +341,6 @@
 			<version>1.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>verificacion</groupId>
-			<artifactId>connector</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-
 	</dependencies>
 
 </project> 
