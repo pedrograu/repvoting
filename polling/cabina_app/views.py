@@ -1,13 +1,11 @@
 # encoding: utf-8
-from django.http import HttpResponse
-from django.shortcuts import render
+# -*- encoding: utf-8 -*-
 from rest_framework.decorators import api_view
 from cabina_app.services import *
 
 
 @api_view(['GET'])
 def recibe_id_votacion(request, id_poll):
-
     # Comprobar que el identificador de la votacion es numerico
     try:
         id_poll = int(id_poll)
@@ -36,7 +34,6 @@ def recibe_id_votacion(request, id_poll):
 
 @api_view(['POST'])
 def cabinarecepcion(request):
-
     if request.method == 'POST':
 
         post_data = request.POST
@@ -73,13 +70,21 @@ def cabinarecepcion(request):
         # Construir voto
         vote = get_vote(poll, user, post_data)
 
+        # Cifrar el voto
+        encryption_vote = get_encryption_vote(vote)
+        if encryption_vote is False:
+            informacion = "La contraseña proporcionada es demasiada corta como para cifrar dicho voto. Usted no podrá " \
+                          "votar en esta votación hasta que se arregle dicho fallo.\n\nPongase en contacto con " \
+                          "verificacion."
+            return render(request, "informacion.html", {'informacion': informacion, 'error': True})
+
         # Actualizar el estado de la votacion del usuario
         if not update_user(request, poll.id):
             informacion = "No se ha podido actualizar el estado de la votación del usuario"
             return render(request, "informacion.html", {'informacion': informacion, 'error': True})
         else:
             # Almacenar el voto
-            if not save_vote(vote):
+            if not save_vote(encryption_vote, poll.id):
                 informacion = "No se ha podido almacenar el voto"
                 return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
@@ -90,12 +95,13 @@ def cabinarecepcion(request):
         return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
 
-@api_view(['GET'])
-def prueba_rsa(request, id_votacion):
-    key = get_key_rsa(id_votacion)
-    if key is False:
-        informacion = "Hubo un problema con la clave RSA, contacte con verificación"
-        return render(request, "informacion.html", {'informacion': informacion, 'error': True})
-
-    json_data = json.dumps(key)
-    return HttpResponse(json_data, mimetype='application/json')
+# @api_view(['GET'])
+# def prueba_rsa(request, id_votacion):
+#    voto1 = Vote()
+#    key = get_key_rsa(voto1)
+    # if key:
+#         informacion = "Hubo un problema con la clave RSA, contacte con verificación"
+#       return render(request, "informacion.html", {'informacion': informacion})
+#
+    # json_data = json.dumps(key)
+    # return HttpResponse(json_data, mimetype='application/json')
