@@ -7,7 +7,7 @@ class User(models.Model):
     password = models.CharField(max_length=250, blank=True)
     email = models.EmailField(blank=True)
     genre = models.CharField(max_length=6, blank=False)
-    community = models.CharField(max_length=250, blank=False)
+    autonomous_community = models.CharField(max_length=250, blank=False)
     age = models.IntegerField(blank=False)
 
     def __unicode__(self):
@@ -19,12 +19,12 @@ class Vote(models.Model):
     id_poll = models.IntegerField(blank=False)
     age = models.IntegerField(blank=False)
     genre = models.CharField(max_length=6, blank=False)
-    community = models.CharField(max_length=250, blank=False)
+    autonomous_community = models.CharField(max_length=250, blank=False)
     answers = models.TextField(blank=False) #String question1:answer1, question2:answer2
 
     def __unicode__(self):
-        return str(self.id) + " " + str(self.id_poll) + str(
-            self.age) + " " + self.genre + " " + self.community + " " + self.answers
+        return str(self.id_poll) + str(
+            self.age) + " " + self.genre + " " + self.autonomous_community + " " + self.answers
 
 
 class Poll(models.Model):
