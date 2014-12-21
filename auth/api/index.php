@@ -16,13 +16,13 @@
     } else {
         switch ($_GET['method']) {
             case 'getUser':
-                if(!isset($_GET['user'])){
+                if (!isset($_GET['user'])) {
                     badRequest();
-                }else{
+                } else {
                     getUserAPI($_GET['user']);
                 }
                 break;
-             case 'getUsers':
+            case 'getUsers':
                 getUsers();
                 break;
             case 'checkToken':
