@@ -1,7 +1,7 @@
 # encoding: utf-8
-# -*- encoding: utf-8 -*-
 from rest_framework.decorators import api_view
 from cabina_app.services import *
+from django.shortcuts import render
 
 
 @api_view(['GET'])
@@ -75,7 +75,7 @@ def cabinarecepcion(request):
         if encryption_vote is False:
             informacion = "La contraseña proporcionada es demasiada corta como para cifrar dicho voto. Usted no podrá " \
                           "votar en esta votación hasta que se arregle dicho fallo.\n\nPongase en contacto con " \
-                          "verificacion."
+                          "verificación."
             return render(request, "informacion.html", {'informacion': informacion, 'error': True})
 
         # Actualizar el estado de la votacion del usuario
@@ -93,15 +93,3 @@ def cabinarecepcion(request):
     else:
         informacion = "Lo sentimos, el metodo solicitado no esta disponible"
         return render(request, "informacion.html", {'informacion': informacion, 'error': True})
-
-
-# @api_view(['GET'])
-# def prueba_rsa(request, id_votacion):
-#    voto1 = Vote()
-#    key = get_key_rsa(voto1)
-    # if key:
-#         informacion = "Hubo un problema con la clave RSA, contacte con verificación"
-#       return render(request, "informacion.html", {'informacion': informacion})
-#
-    # json_data = json.dumps(key)
-    # return HttpResponse(json_data, mimetype='application/json')

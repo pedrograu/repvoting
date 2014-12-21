@@ -1,13 +1,13 @@
 # encoding: utf-8
-# -*- encoding: utf-8 -*-
 from base64 import b64decode
 import json
 import urllib
 import urllib2
 from Crypto.PublicKey.RSA import importKey
-from django.shortcuts import render
+
 import requests
 import rsa
+
 from cabina_app.models import User, Poll, Vote
 
 
@@ -30,7 +30,8 @@ def can_vote(request, id_poll):
         user = request.COOKIES.get('user')
         token = request.COOKIES.get('token')
         cookies = dict(user=user, token=token)
-        r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll), cookies=cookies)
+        r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll),
+                         cookies=cookies)
         json_censo = r.json()
         result = False
         if json_censo['result'] == "yes":
@@ -41,12 +42,6 @@ def can_vote(request, id_poll):
 
 
 def get_encryption_vote(vote):
-    # publica = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlhPrSvc60R9NWmhtG3Qwvk5DYH" \
-    #           "SZh4Kf35Dwa3IFF049oSg2tqej6fqiBC7BQ/w725rbOhAXWiZwP9PLd1jm4MJqsk3RxVqL" \
-    #           "OH4KkqllEZbz+IYrQiFOHwj8e26hjpNetNg9bwtmPxm5LInNRF6WF3QGQMk2/hVvL4FjVIl" \
-    #           "u0TRTlf6HQWhnT0tWOQ30G+hUxGSCUI5tqDBjgwpfmk7b6JsiBpSSsiALSe0HY//U5YBC1WA" \
-    #           "Qx9c3hgXN4QUuQWOO8w+76gVz1avOhdPY/r69331MiMEGBRr42UvgBOz/xno9SiFHdJUvO8S" \
-    #           "eH0ixkVY8IaBTQPPOl/KZALkFrnLUOwIDAQAB"
     json_vote = vote_as_json(vote)
     json_string = str(json_vote)
     try:
@@ -63,8 +58,7 @@ def get_encryption_vote(vote):
 def save_vote(encryption_vote, id_poll):
     data = [('vote', encryption_vote), ('votation_id', id_poll)]
     data = urllib.urlencode(data)
-    path = 'http://localhost/almacenamiento/vote.php'
-    # path = 'http://php-egc.rhcloud.com/vote.php'
+    path = 'http://php-egc.rhcloud.com/vote.php'
     req = urllib2.Request(path, data)
     response = urllib2.urlopen(req)
     response_data = json.load(response)
@@ -101,8 +95,6 @@ def get_vote(poll, user, post_data):
         answer_question = post_data[str(question.id)]
         a = {"question": question.text, "answer_question": answer_question}
         answers.append(a)
-        # answers = answers + ' ' + question.text + ':' + str(answer_question) + ','
-    # answers = "[" + answers[:-1] + "]"
 
     vote = Vote()
     vote.id = 1
@@ -119,7 +111,8 @@ def update_user(request, id_poll):
         user = request.COOKIES.get('user')
         token = request.COOKIES.get('token')
         cookies = dict(user=user, token=token)
-        r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll), cookies=cookies)
+        r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll),
+                         cookies=cookies)
         json_censo = r.json()
         result = False
         if json_censo['result'] == "yes":
