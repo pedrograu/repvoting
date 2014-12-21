@@ -9,6 +9,7 @@
 * \author auth.agoraUS
 */
 
+chdir(dirname(__FILE__));
 include_once "../database.php";
 include_once "../auth.php";
 
