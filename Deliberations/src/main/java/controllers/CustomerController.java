@@ -827,7 +827,7 @@ public class CustomerController extends AbstractController {
 	
 	
 	@RequestMapping("/createThreadFromVotacion")
-	public String createTreadFromVotacion(String name){
+	public ModelAndView createTreadFromVotacion(String name){
 		
 		User user=userService.findByUsername("customer");
 		
@@ -839,7 +839,7 @@ public class CustomerController extends AbstractController {
 		nuevo.setComments(new ArrayList<Comment>());
 		
 		threadService.save(nuevo);
-		return "true";
+		return new ModelAndView("redirect:listThreads.do");
 		
 		//CreacionAdminVotaciones/#/create
 	}
