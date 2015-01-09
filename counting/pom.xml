@@ -105,6 +105,13 @@
             <version>2.2.3</version>
         </dependency>
         
+		<!-- Libreria verificacion -->
+        <dependency>
+			<groupId>com.verificacion</groupId>
+			<artifactId>verificacion</artifactId>
+			<version>1.0</version>
+        </dependency>
+		
         <!-- MySQL -->
 
 		<dependency>
