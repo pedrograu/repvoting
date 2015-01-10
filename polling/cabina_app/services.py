@@ -1,9 +1,13 @@
 # encoding: utf-8
+from base64 import b64decode
 import json
 import urllib
 import urllib2
+from Crypto.PublicKey.RSA import importKey
+
 import requests
 import rsa
+
 from cabina_app.models import User, Poll, Vote
 
 
@@ -26,7 +30,8 @@ def can_vote(request, id_poll):
         user = request.COOKIES.get('user')
         token = request.COOKIES.get('token')
         cookies = dict(user=user, token=token)
-        r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll), cookies=cookies)
+        r = requests.get("http://localhost:8080/ADMCensus/census/canVote.do?idVotacion=" + str(id_poll),
+                         cookies=cookies)
         json_censo = r.json()
         result = False
         if json_censo['result'] == "yes":
@@ -36,14 +41,24 @@ def can_vote(request, id_poll):
     return result
 
 
-def save_vote(vote):
+def get_encryption_vote(vote):
     json_vote = vote_as_json(vote)
-    # voto_cifrado = rsa.encrypt(json_vote, get_key_rsa(vote.id_poll))
-    voto_cifrado = json_vote
-    data = [('vote', voto_cifrado), ('votation_id', vote.id_poll)]
+    json_string = str(json_vote)
+    try:
+        public_key = get_key_rsa(vote.id_poll)
+        if public_key is not False:
+            encrypt_vote = encrypt_rsa(json_string, public_key)
+        else:
+            encrypt_vote = False
+    except OverflowError:
+        encrypt_vote = False
+    return encrypt_vote
+
+
+def save_vote(encryption_vote, id_poll):
+    data = [('vote', encryption_vote), ('votation_id', id_poll)]
     data = urllib.urlencode(data)
     path = 'http://php-egc.rhcloud.com/vote.php'
-    # path = 'http://localhost/almacenamiento/vote.php'
     req = urllib2.Request(path, data)
     response = urllib2.urlopen(req)
     response_data = json.load(response)
@@ -75,14 +90,11 @@ def get_user(request):
 
 
 def get_vote(poll, user, post_data):
-
     answers = []
     for question in poll.questions:
         answer_question = post_data[str(question.id)]
         a = {"question": question.text, "answer_question": answer_question}
         answers.append(a)
-        # answers = answers + ' ' + question.text + ':' + str(answer_question) + ','
-    # answers = "[" + answers[:-1] + "]"
 
     vote = Vote()
     vote.id = 1
@@ -99,7 +111,8 @@ def update_user(request, id_poll):
         user = request.COOKIES.get('user')
         token = request.COOKIES.get('token')
         cookies = dict(user=user, token=token)
-        r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll), cookies=cookies)
+        r = requests.get("http://localhost:8080/ADMCensus/census/updateUser.do?idVotacion=" + str(id_poll),
+                         cookies=cookies)
         json_censo = r.json()
         result = False
         if json_censo['result'] == "yes":
@@ -122,7 +135,6 @@ def json_as_user(json_auth):
 
 
 def vote_as_json(vote):
-
     to_dump_vote = {
         'id': vote.id,
         'id_poll': vote.id_poll,
@@ -135,17 +147,19 @@ def vote_as_json(vote):
 
 
 def encrypt_rsa(message, public_key_loc):
-    crypto = rsa.encrypt(message, public_key_loc)
+    # cifra el mensaje y lo codifica a base64
+    key_decode = b64decode(public_key_loc)
+    key_perfect = importKey(key_decode, passphrase=None)
+    cryptos = rsa.encrypt(message, key_perfect)
+    crypto = cryptos.encode("base64")
     return crypto
 
 
 def decrypt_rsa(crypto, private_key):
-    return rsa.decrypt(crypto, private_key)
-
-
-def generate_rsa(bits=1024):
-    (pubkey, privkey) = rsa.newkeys(bits)
-    return pubkey, privkey
+    key_decode = b64decode(private_key)
+    key_perfect = importKey(key_decode, passphrase=None)
+    crypto = crypto.decode("base64")
+    return rsa.decrypt(crypto, key_perfect)
 
 
 def get_key_rsa(id_votacion):
@@ -157,8 +171,6 @@ def get_key_rsa(id_votacion):
         if public is not None and public is not "":
             result = public
         return result
-
     except ValueError:
         return False
-
 

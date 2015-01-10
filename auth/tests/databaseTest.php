@@ -1,6 +1,7 @@
 <?php
 /**
 * @file
+* @group tests
 * \brief Clase para testear las funciones de operaciones con la base de datos.
 *
 * \details Clase que, usando el framework PHPUnit, pone a prueba a los 
@@ -8,6 +9,7 @@
 * \author auth.agoraUS
 */
 
+chdir(dirname(__FILE__));
 include_once "../database.php";
 include_once "../auth.php";
 

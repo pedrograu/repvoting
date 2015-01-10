@@ -23,7 +23,7 @@ class Vote(models.Model):
     answers = models.TextField(blank=False)
 
     def __unicode__(self):
-        return str(self.id_poll) + str(
+        return str(self.id) + " " + str(self.id_poll) + str(
             self.age) + " " + self.genre + " " + self.autonomous_community + " " + self.answers
 
 
